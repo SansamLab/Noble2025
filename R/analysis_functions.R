@@ -1783,6 +1783,7 @@ importBED <- function(bedPath, chromosomesToImport = chromosomes) {
 #' print(plot)
 #'
 #' @import GenomicRanges
+#' @import IRanges
 #' @import eulerr
 #' @import magrittr
 #'
