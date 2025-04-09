@@ -1858,7 +1858,7 @@ plotLog2fcHeatmap <- function(
     color_breaks = c(-0.5, 0, 0.5, 1, 2)
 ) {
   # Import peaks and assign labels
-  peaks <- lapply(peak_file_paths, importBED)
+  peaks <- lapply(peak_file_paths, importBED,chromosomes)
   all_peaks <- as(peaks, "GRangesList") %>% unlist()
   peak_sets <- lapply(names(peaks), function(nme) {
     gr <- as(peaks, "GRangesList")[[nme]]
@@ -1872,7 +1872,7 @@ plotLog2fcHeatmap <- function(
     gsub(" *$", "", .)
 
   # Import summit GRanges and resize
-  summit_granges_list <- lapply(summit_file_paths, importBED)
+  summit_granges_list <- lapply(summit_file_paths, importBED,chromosomes)
   all_summits_gr <- as(summit_granges_list, "GRangesList") %>% unlist()
   plotting_regions_gr <- GenomicRanges::resize(all_summits_gr, width = plotting_range, fix = "center")
 
