@@ -1774,12 +1774,10 @@ makeLibraryNormalizedMatrix <- function(
 #' @importFrom GenomeInfoDb seqlevels
 #' @export
 importBED <- function(bedPath, chromosomesToImport = chromosomes) {
-  # Read BED file into a data frame and assign column names
   read.table(bedPath) %>%
     set_names(c("seqnames", "start", "end")) %>%
-    # Convert data frame to GRanges object
     GenomicRanges::makeGRangesFromDataFrame() %>%
-    # Subset GRanges object to specified chromosomes
-    { seqlevels(., pruning.mode = "coarse") <- chromosomesToImport; . }
+    { GenomeInfoDb::`seqlevels<-`(., pruning.mode = "coarse") <- chromosomesToImport; . }
 }
+
 
