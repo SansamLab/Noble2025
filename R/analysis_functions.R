@@ -1796,6 +1796,7 @@ importBED <- function(bedPath, chromosomesToImport = chromosomes) {
 #' @importFrom GenomicRanges `%over%`
 #' @importFrom eulerr euler
 #' @importFrom eulerr plot
+#' @importFrom magrittr %>%
 #'
 #' @export
 plot_two_sample_euler <- function(gr1, gr2, labels = c("Set1", "Set2"), fills = c("grey", "white")) {
