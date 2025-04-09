@@ -17,8 +17,6 @@
 #' @return A DataTrack object for Log2FC coverage data.
 #'
 #' @import GenomicRanges
-#' @import BioconductorTxDb
-#' @import Bioconductorcsaw
 #' @import zoo
 #'
 #' @examples
@@ -97,8 +95,6 @@ makeLog2FcCoverageDataTrack <- function(chomosome="chr3",
 #' @return A DataTrack object for 2-sample Log2FC coverage data.
 #'
 #' @import GenomicRanges
-#' @import BioconductorTxDb
-#' @import Bioconductorcsaw
 #' @import zoo
 #'
 #' @examples

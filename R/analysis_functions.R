@@ -1,20 +1,3 @@
-# Load required libraries
-library(magrittr)
-library(GenomicRanges)
-library(parallel)
-library(bamsignals)
-library(Rsamtools)
-library(circlize)
-library(ComplexHeatmap)
-library(ggplot2)
-library(viridisLite)
-library(ChIPseeker)
-library(eulerr)
-library(UpSetR)
-library(corrplot)
-library(zoo)
-
-
 #' Create a Data Frame Indicating Peak Overlaps
 #'
 #' This function takes a set of subject peaks and a list of query peak sets,
@@ -28,6 +11,7 @@ library(zoo)
 #'         subject peak overlaps the query peak set and `FALSE` otherwise.
 #'
 #' @importFrom GenomicRanges `%over%`
+#' @export
 #'
 #' @seealso \code{\link{define_unified_reference_peaks}}, \code{\link{make_euler_plot_of_overlaps_with_reference_peaks}}
 #'
@@ -61,7 +45,7 @@ make_peak_overlap_df <- function(subjectPeaks, queryPeaksList){
 #' @import GenomicRanges
 #'
 #' @seealso \code{\link{make_peak_overlap_df}}, \code{\link{make_euler_plot_showing_peak_overlaps}}
-#'
+#' @export
 #' @examples
 #' peaks_list <- list(
 #'   GRanges(seqnames="chr1", IRanges(start=c(100, 300), width=50)),
@@ -84,7 +68,7 @@ define_unified_reference_peaks <- function(peaks_gRanges_list){
 #' @return A `ggplot` object representing the Euler plot.
 #'
 #' @import eulerr
-#'
+#' @export
 #' @seealso \code{\link{make_peak_overlap_df}}, \code{\link{make_euler_plot_showing_peak_overlaps}}
 #'
 #' @examples
@@ -113,7 +97,7 @@ make_euler_plot_of_overlaps_with_reference_peaks <- function(peak_overlap_df, pl
 #'
 #' @importFrom GenomicRanges GRanges
 #' @importFrom eulerr euler
-#'
+#' @export
 #' @seealso \code{\link{define_unified_reference_peaks}}, \code{\link{make_peak_overlap_df}}, \code{\link{make_euler_plot_of_overlaps_with_reference_peaks}}
 #'
 #' @examples
@@ -154,7 +138,7 @@ make_euler_plot_showing_peak_overlaps <- function(peaks_bed_paths_list, colors_v
 #' @import ChIPseeker
 #' @importFrom GenomicFeatures TxDb
 #' @importFrom AnnotationDbi select
-#'
+#' @export
 #' @seealso \code{\link{make_stacked_barchart_of_genomic_features_overlapping_peaks}}
 #'
 #' @examples
@@ -198,7 +182,7 @@ make_df_of_genomic_features_overlapping_peaks <- function(
 #'
 #' @import ggplot2
 #' @importFrom grid unit
-#'
+#' @export
 #' @seealso \code{\link{make_df_of_genomic_features_overlapping_peaks}}
 #'
 #' @examples
@@ -264,6 +248,7 @@ make_stacked_barchart_of_genomic_features_overlapping_peaks <- function(
 #' @family noble_peak_density_heatmap
 #' @import GenomicRanges
 #' @importFrom IRanges IRanges
+#' @export
 #' @examples
 #' create_bins_across_genomic_range("chr1", 100000, 200000, 5000)
 create_bins_across_genomic_range <- function(range_chromosome,
@@ -285,6 +270,7 @@ create_bins_across_genomic_range <- function(range_chromosome,
 #'
 #' @return A numeric vector of peak counts per bin.
 #' @importFrom GenomicRanges countOverlaps
+#' @export
 #' @family noble_peak_density_heatmap
 #' @examples
 #' bins <- create_bins_across_genomic_range("chr1", 100000, 200000, 5000)
@@ -306,6 +292,7 @@ count_peaks_in_bins <- function(peaks_gRanges, genomicRange_bins){
 #'   - `counts`: The peak count per bin.
 #'   - `x`: The bin index (1-based).
 #' @family noble_peak_density_heatmap
+#' @export
 #' @examples
 #' convert_vector_to_dataframe_for_plot(c(1, 3, 5, 2, 0))
 convert_vector_to_dataframe_for_plot <- function(count_vector){
@@ -325,6 +312,7 @@ convert_vector_to_dataframe_for_plot <- function(count_vector){
 #' @return A `ggplot` object representing the heatmap.
 #' @import ggplot2
 #' @importFrom scales viridis_pal
+#' @export
 #' @seealso \code{\link{create_bins_across_genomic_range}}, \code{\link{count_peaks_in_bins}}
 #' @family noble_peak_density_heatmap
 #' @examples
@@ -392,7 +380,7 @@ make_heatmap_of_peak_counts_in_bins <- function(peak_counts_in_bins_df,
 #' @importFrom IRanges IRanges
 #' @import ggplot2
 #' @importFrom viridisLite viridis
-#'
+#' @export
 #' @seealso \code{\link{create_bins_across_genomic_range}}, \code{\link{count_peaks_in_bins}},
 #'   \code{\link{convert_vector_to_dataframe_for_plot}}, \code{\link{make_heatmap_of_peak_counts_in_bins}}
 #'
@@ -536,7 +524,7 @@ getTotalReadCount <- function(BamFile){
 #' @return NULL (The function generates and displays the plot without returning a value.)
 #'
 #' @importFrom GenomicRanges makeGRangesFromDataFrame reduce findOverlaps width pintersect seqnames start end queryHits subjectHits
-#' @import UpSetR euler plot
+#' @import UpSetR
 #' @export
 #'
 #' @examples
@@ -593,6 +581,7 @@ makePlotFromBeds <- function(BedFilenames, plotChoice, sampleLabelsDF, colrs, al
 #' using the GenomicRanges package. The BED file should have columns named
 #' "seqnames", "start", and "end" to represent genomic ranges.
 #' @import GenomicRanges
+#' @export
 #' @param bedFile Path to the BED file to be read and converted.
 #'
 #' @return A GenomicRanges object representing the data in the BED file.
@@ -619,7 +608,8 @@ readBed <- function(bedFile){
 #' @param outputPath Path to the output file where the unified peak set will be saved.
 #'
 #' @return NULL (The function writes the result to a file and doesn't return a value.)
-#'
+#' @export
+#' @import GenomicRanges
 #' @examples
 #' pkFiles <- c("path/to/peakfile1.bed", "path/to/peakfile2.bed")
 #' outputPath <- "path/to/output/unified_peaks"
@@ -669,7 +659,7 @@ createAndWriteUnifiedPeakSet <- function(pkFiles, smtFiles,outputPath){
 #'
 #' @return None (output is saved to hg38BedOutput file).
 #'
-#' @import rtracklayer liftOver
+#' @import rtracklayer
 #'
 #' @examples
 #' hg19ToHg38Liftover("input_hg19.bed", "output_hg38.bed")
