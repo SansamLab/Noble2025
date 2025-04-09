@@ -1777,7 +1777,7 @@ importBED <- function(bedPath, chromosomesToImport = chromosomes) {
   read.table(bedPath) %>%
     set_names(c("seqnames", "start", "end")) %>%
     GenomicRanges::makeGRangesFromDataFrame() %>%
-    { GenomeInfoDb::`seqlevels<-`(., pruning.mode = "coarse") <- chromosomesToImport; . }
+    { GenomeInfoDb::`seqlevels`(., pruning.mode = "coarse") <- chromosomesToImport; . }
 }
 
 
