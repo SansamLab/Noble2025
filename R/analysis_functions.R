@@ -17,18 +17,18 @@ library(zoo)
 
 #' Create a Data Frame Indicating Peak Overlaps
 #'
-#' This function takes a set of subject peaks and a list of query peak sets, 
+#' This function takes a set of subject peaks and a list of query peak sets,
 #' then determines whether each query peak set overlaps with the subject peaks.
 #'
 #' @param subjectPeaks A `GRanges` object representing the reference peak set.
 #' @param queryPeaksList A named list of `GRanges` objects, each representing a query peak set.
 #'
-#' @return A data frame where each row corresponds to a peak in `subjectPeaks`, 
-#'         and each column corresponds to a query peak set. Values are `TRUE` if the 
+#' @return A data frame where each row corresponds to a peak in `subjectPeaks`,
+#'         and each column corresponds to a query peak set. Values are `TRUE` if the
 #'         subject peak overlaps the query peak set and `FALSE` otherwise.
 #'
 #' @importFrom GenomicRanges `%over%`
-#' 
+#'
 #' @seealso \code{\link{define_unified_reference_peaks}}, \code{\link{make_euler_plot_of_overlaps_with_reference_peaks}}
 #'
 #' @examples
@@ -51,7 +51,7 @@ make_peak_overlap_df <- function(subjectPeaks, queryPeaksList){
 
 #' Define a Unified Reference Peak Set
 #'
-#' This function merges multiple peak sets into a single unified peak set, 
+#' This function merges multiple peak sets into a single unified peak set,
 #' reducing overlapping peaks into non-overlapping regions.
 #'
 #' @param peaks_gRanges_list A list of `GRanges` objects, each representing a set of peaks.
@@ -59,7 +59,7 @@ make_peak_overlap_df <- function(subjectPeaks, queryPeaksList){
 #' @return A `GRanges` object representing the unified peak set.
 #'
 #' @import GenomicRanges
-#' 
+#'
 #' @seealso \code{\link{make_peak_overlap_df}}, \code{\link{make_euler_plot_showing_peak_overlaps}}
 #'
 #' @examples
@@ -103,7 +103,7 @@ make_euler_plot_of_overlaps_with_reference_peaks <- function(peak_overlap_df, pl
 
 #' Generate an Euler Plot Showing Peak Overlaps from Multiple BED Files
 #'
-#' This function reads multiple BED files, defines a unified reference peak set, 
+#' This function reads multiple BED files, defines a unified reference peak set,
 #' determines peak overlaps, and creates an Euler plot.
 #'
 #' @param peaks_bed_paths_list A named list of file paths to BED files, where each represents a peak set.
@@ -127,10 +127,10 @@ make_euler_plot_of_overlaps_with_reference_peaks <- function(peak_overlap_df, pl
 make_euler_plot_showing_peak_overlaps <- function(peaks_bed_paths_list, colors_vector){
   peaks_gRanges_list <- lapply(peaks_bed_paths_list, readBed)
   names(peaks_gRanges_list) <- names(peaks_bed_paths_list)
-  
+
   reference_peaks <- define_unified_reference_peaks(peaks_gRanges_list)
   overlap_df <- make_peak_overlap_df(reference_peaks, peaks_gRanges_list)
-  
+
   euler_plot <- make_euler_plot_of_overlaps_with_reference_peaks(overlap_df, colors_vector)
   return(euler_plot)
 }
@@ -177,7 +177,7 @@ make_df_of_genomic_features_overlapping_peaks <- function(
   # Extract annotation statistics
   df_of_genomic_features_overlapping_peaks <- ChiPSeeker_annotatePeaks_output@annoStat
   df_of_genomic_features_overlapping_peaks$Set <- SetName
-  
+
   return(df_of_genomic_features_overlapping_peaks)
 }
 
@@ -198,7 +198,7 @@ make_df_of_genomic_features_overlapping_peaks <- function(
 #'
 #' @import ggplot2
 #' @importFrom grid unit
-#' 
+#'
 #' @seealso \code{\link{make_df_of_genomic_features_overlapping_peaks}}
 #'
 #' @examples
@@ -220,7 +220,7 @@ make_stacked_barchart_of_genomic_features_overlapping_peaks <- function(
     "Other Exon" = "#F7F1DE",
     "1st Intron" = "#94d2bd",
     "Other Intron" = "#0a9396",
-    "Downstream (<=300)" = "#005f73", 
+    "Downstream (<=300)" = "#005f73",
     "Distal Intergenic" = "#001219"
   )
 ) {
@@ -230,7 +230,7 @@ make_stacked_barchart_of_genomic_features_overlapping_peaks <- function(
   }
 
   # Generate stacked bar chart
-  FeaturePlot <- ggplot(df_of_genomic_features_overlapping_peaks, aes(fill = Feature, y = Frequency, x = Set)) + 
+  FeaturePlot <- ggplot(df_of_genomic_features_overlapping_peaks, aes(fill = Feature, y = Frequency, x = Set)) +
     geom_bar(position = "fill", stat = "identity") +
     scale_fill_manual(values = feature_colors) +
     theme_bw() +
@@ -243,7 +243,7 @@ make_stacked_barchart_of_genomic_features_overlapping_peaks <- function(
       legend.key.size = unit(2, 'mm'),
       panel.background = element_rect(fill = 'transparent'),
       plot.background = element_rect(fill = 'transparent', color = NA)
-    ) + 
+    ) +
     coord_flip()
 
   return(FeaturePlot)
@@ -334,23 +334,23 @@ make_heatmap_of_peak_counts_in_bins <- function(peak_counts_in_bins_df,
                                                 heatmap_fill_colors,
                                                 heatmap_breaks){
   cap_value <- max(heatmap_breaks)
-  
+
   # Cap the counts if they exceed the highest break value
   if (!is.null(cap_value)) {
     peak_counts_in_bins_df$counts[peak_counts_in_bins_df$counts > cap_value] <- cap_value
   }
-  
+
   # Convert counts to a factor to ensure discrete color mapping
-  peak_counts_in_bins_df$counts <- factor(peak_counts_in_bins_df$counts, 
+  peak_counts_in_bins_df$counts <- factor(peak_counts_in_bins_df$counts,
                                           levels = heatmap_breaks)
-  
+
   # Validate color and breaks match the number of levels
   if (length(heatmap_fill_colors) != length(levels(peak_counts_in_bins_df$counts))) {
     stop("Error: The number of colors must match the number of unique count values.")
   } else {
     message("Levels match the number of colors.")
   }
-  
+
   heat_map_of_peak_counts <- ggplot(peak_counts_in_bins_df,
                                     aes(x = x, y = 1, fill = counts)) +
     geom_tile() +
@@ -361,7 +361,7 @@ make_heatmap_of_peak_counts_in_bins <- function(peak_counts_in_bins_df,
     theme(
           # legend.position = "none",
           plot.margin = margin(0, 0, 0, 0, "pt"))
-  
+
   return(heat_map_of_peak_counts)
 }
 
@@ -415,14 +415,14 @@ generate_peak_density_heatmap <- function(peaks_gRanges,
   genomic_range_bins <- create_bins_across_genomic_range(range_chromosome,
                                                          range_start,
                                                          range_end, binSize)
-  
+
   # Count peaks in bins
   peak_counts_in_bins <- count_peaks_in_bins(peaks_gRanges,
                                              genomic_range_bins)
-  
+
   # Convert counts to a data frame for plotting
   peak_counts_in_bins_df <- convert_vector_to_dataframe_for_plot(peak_counts_in_bins)
-  
+
   # Generate the heatmap
   heat_map_of_peak_counts <- make_heatmap_of_peak_counts_in_bins(peak_counts_in_bins_df,
                                                                  colors,
@@ -431,7 +431,39 @@ generate_peak_density_heatmap <- function(peaks_gRanges,
 }
 
 
-
+#' Generate a Matrix of Smoothed Read Counts Across Genomic Regions
+#'
+#' This function creates a count matrix representing read density across a set of genomic ranges,
+#' smoothed using a rolling sum within each chromosome. It is primarily used to generate signal
+#' profiles (e.g., for metaplots or heatmaps) from BAM files using midpoint-aligned paired-end reads.
+#'
+#' @param bamPath Character. Path to the input BAM file.
+#' @param Ranges A \code{GRanges} object representing the genomic regions of interest.
+#' @param plottingRange Integer. Total width to which each region should be resized (default: 4001).
+#' @param windowSize Integer. Width of the smoothing window (default: 150).
+#' @param stepSize Integer. Step size for signal binning (default: 5).
+#' @param coreCount Integer. Number of parallel processes to use (default: 8).
+#' @param chromosomes Character vector of chromosome names to include (default: \code{allowedChromosomes}).
+#'
+#' @return A numeric matrix where rows represent bins within each genomic region and columns represent regions.
+#'
+#' @details Each region in \code{Ranges} is resized to \code{plottingRange} bp centered on its midpoint.
+#' Reads are binned using \code{stepSize}, and the signal is smoothed using a rolling window
+#' of width \code{windowSize / stepSize}.
+#'
+#' @importFrom GenomicRanges resize seqnames
+#' @importFrom parallel mclapply
+#' @importFrom Rsamtools idxstatsBam
+#' @importFrom zoo rollsumr
+#' @importFrom bamsignals bamProfile alignSignals
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' gr <- GRanges("chr1", IRanges(start = c(100000, 200000), width = 4001))
+#' mat <- makeCountMatrix("mydata.bam", gr)
+#' }
 makeCountMatrix <- function(
     bamPath = "../2024Dec30_siTICRRonMTBP_CutRun/ReplicatePeakAnalyzer/results/mergedDownSampledBams/controlMTBP_in.bam",
     Ranges = CombinedRanges,
@@ -455,7 +487,28 @@ makeCountMatrix <- function(
   return(countMatrix)
 }
 
-
+#' Compute Total Mapped Reads for Canonical Chromosomes
+#'
+#' This function calculates the total number of mapped reads in a BAM file,
+#' restricted to canonical chromosomes (chr1–chr22).
+#'
+#' @param BamFile Character. Path to a BAM file.
+#'
+#' @return A single numeric value representing the total number of reads mapped
+#'   to chromosomes chr1 through chr22.
+#'
+#' @details This function uses \code{idxstatsBam()} to obtain alignment statistics
+#' for all reference sequences in the BAM file, then filters to autosomes
+#' and returns the sum of mapped reads.
+#'
+#' @importFrom Rsamtools idxstatsBam
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' total_reads <- getTotalReadCount("example.bam")
+#' }
 getTotalReadCount <- function(BamFile){
   idxstatsBam(BamFile) %>%
       {
@@ -502,10 +555,10 @@ makePlotFromBeds <- function(BedFilenames, plotChoice, sampleLabelsDF, colrs, al
     bed.df <- read.table(file)
     GenomicRanges::makeGRangesFromDataFrame(bed.df, seqnames.field = "V1", start.field = "V2", end.field = "V3")
   })
-  
+
   # Reduce to get AllBeds.gr
   AllBeds.gr <- GenomicRanges::reduce(do.call("c", Beds.gr))
-  
+
   # Function to get overlaps
   GetOverlapsWithAll <- function(bed.gr) {
     hits <- GenomicRanges::findOverlaps(AllBeds.gr, bed.gr)
@@ -513,16 +566,16 @@ makePlotFromBeds <- function(BedFilenames, plotChoice, sampleLabelsDF, colrs, al
     GRovrlps <- AllBeds.gr[queryHits(sigHits)]
     paste(GenomicRanges::seqnames(GRovrlps), GenomicRanges::start(GRovrlps), GenomicRanges::end(GRovrlps), sep = "_")
   }
-  
+
   # Get overlaps for all BedFilenames
   lst <- lapply(Beds.gr, GetOverlapsWithAll)
-  
+
   # Match sampleLabelsDF and remove file extensions
   nmes <- gsub("\\.[^.]*$", "", sampleLabelsDF$labels[match(sampleLabelsDF$files, basename(BedFilenames))])
-  
+
   # Set names for lst
   names(lst) <- nmes
-  
+
   # Create upsetList and plot
   upsetList <- UpSetR::fromList(lst)
   if (plotChoice == "UpSet") {
@@ -539,7 +592,7 @@ makePlotFromBeds <- function(BedFilenames, plotChoice, sampleLabelsDF, colrs, al
 #' This function reads a BED file and converts it into a GenomicRanges object
 #' using the GenomicRanges package. The BED file should have columns named
 #' "seqnames", "start", and "end" to represent genomic ranges.
-#'
+#' @import GenomicRanges
 #' @param bedFile Path to the BED file to be read and converted.
 #'
 #' @return A GenomicRanges object representing the data in the BED file.
@@ -576,28 +629,28 @@ createAndWriteUnifiedPeakSet <- function(pkFiles, smtFiles,outputPath){
   # Read and convert peak files to GenomicRanges objects
   peaks <- lapply(pkFiles, readBed)
   summits <- lapply(smtFiles,readBed)
-  
+
   # Combine the second set of peaks with non-overlapping peaks from the first set
   unifiedPeaks <- peaks[[2]][!peaks[[2]] %over% peaks[[1]]] %>% c(., peaks[[1]])
   unifiedSummits <- summits[[2]][!peaks[[2]] %over% peaks[[1]]] %>% c(., summits[[1]])
-  
+
   # Create the output directory if it doesn't exist
   if (!file.exists(dirname(outputPath))) {
     dir.create(dirname(outputPath), recursive = TRUE)
   }
-  
+
   # Write the unified peak set to the specified output file
   write.table(unifiedPeaks %>%
                 as.data.frame %>%
-                .[,1:3], 
+                .[,1:3],
               paste0(outputPath,".bed"),
               quote = FALSE, row.names = FALSE, col.names = FALSE, sep = "\t")
   write.table(unifiedSummits %>%
                 as.data.frame %>%
-                .[,1:3], 
+                .[,1:3],
               paste0(outputPath,"_summits.bed"),
               quote = FALSE, row.names = FALSE, col.names = FALSE, sep = "\t")
-  
+
   mcols(unifiedPeaks)$summits <- start(unifiedSummits)
   saveRDS(unifiedPeaks,
           paste0(outputPath,".rds"))
@@ -625,37 +678,34 @@ createAndWriteUnifiedPeakSet <- function(pkFiles, smtFiles,outputPath){
 hg19ToHg38Liftover <- function(hg19BedInput,hg38BedOutput){
   library(rtracklayer)
   library(liftOver)
-  
+
   # Define the URL of the chain file
   chain_url <- "http://hgdownload.soe.ucsc.edu/goldenPath/hg19/liftOver/hg19ToHg38.over.chain.gz"
-  
+
   # Define the destination file path
   dest_file <- "hg19ToHg38.over.chain.gz"
-  
+
   # Download the chain file
   if (!file.exists("hg19ToHg38.over.chain.gz")) {
     download.file(chain_url, destfile = dest_file, method = "auto")
     gunzip("hg19ToHg38.over.chain.gz")
   }
-  
+
   bed_file <- hg19BedInput
   bed_df <- read.table(bed_file,header=F,sep="\t",stringsAsFactors = F)
   bed_gr <- GRanges(bed_df$V1,IRanges(start = bed_df$V2, end = bed_df$V3)) %>%
     {mcols(.)<-bed_df[,-c(1,2,3)];.}
-  
+
   # Load the hg19 to hg38 liftover chain filename
   hg19_to_hg38_chain <- import.chain("hg19ToHg38.over.chain")
-  
+
   # Convert hg19 genomic ranges object to hg38 using the chain file
   hg38_gr <- liftOver(bed_gr, hg19_to_hg38_chain) %>% unlist
-  
+
   export(hg38_gr, hg38BedOutput, format = "bed")
 }
 
 
-
-#############33
-#############
 #' Create a Complex Heatmap of Domain Log2 Fold Change
 #'
 #' Generates a Complex Heatmap of log2 fold change (Lg2FC) values for genomic domains.
@@ -729,44 +779,57 @@ makeDomainHeatPlot <- function(domainsBed="../GenerateTimingWindowsFromHCTReplis
         sum(as.numeric(.[, 3]))
       }
     cpms_rolled <- counts_rolled_sorted / totalReadCount * 1000000
-    
+
     return(cpms_rolled)
   }
   TX_CPMS1 <- makeCPMS(txBamFile1)
   IN_CPMS1 <- makeCPMS(inBamFile1)
   TX_CPMS2 <- makeCPMS(txBamFile2)
   IN_CPMS2 <- makeCPMS(inBamFile2)
-  
+
   TX_CPMS <- Reduce("+",list(TX_CPMS1,TX_CPMS2))/2
   IN_CPMS <- Reduce("+",list(IN_CPMS1,IN_CPMS2))/2
   Lg2FC <- log2(TX_CPMS/(IN_CPMS))
-  
+
   col_fun = colorRamp2(c(-0.5, 0, 0.5), c("green", "white", "red"))
-  
+
   hmp <- ComplexHeatmap::Heatmap(Lg2FC,col=col_fun,cluster_columns = F,cluster_rows = F)
-  
+
   return(hmp)
 }
 
-# Function: makeGrForEduSeq
-# Description: This function transforms a given dataframe (`Eduseqdata_df`) into a GRanges object
-#              suitable for genomic data analysis. The function computes start and end positions
-#              based on an existing column (`bin`) in the input dataframe.
-# Parameters:
-#   Eduseqdata_df - A dataframe containing at least a column named `bin`. Additional columns 
-#                   are preserved in the output GRanges object.
-# Returns:
-#   A GRanges object created from the modified dataframe.
-
+#' Convert EduSeq Data Frame to GRanges Object
+#'
+#' This function transforms an EduSeq-format data frame into a \code{GRanges} object.
+#' It calculates genomic coordinates based on the `bin` column and filters to include
+#' only standard human chromosomes (chr1–chr22).
+#'
+#' @param Eduseqdata_df A data frame containing at least a column named \code{bin}.
+#'   Additional columns are preserved in the resulting GRanges object.
+#'
+#' @return A \code{GRanges} object with chromosome, start, end, and any extra metadata columns.
+#'
+#' @details The start coordinate is calculated as \code{(bin + 1) * 10000}, and the end
+#' coordinate is set to \code{start + 1}. Only chromosomes chr1 through chr22 are retained.
+#'
+#' @importFrom GenomicRanges makeGRangesFromDataFrame seqnames seqlevels
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' df <- data.frame(bin = 0:4, seqnames = "chr1")
+#' gr <- makeGrForEduSeq(df)
+#' }
 makeGrForEduSeq <- function(Eduseqdata_df) {
   # Compute the start positions for the GRanges object.
   # The start position is calculated as (bin + 1) * 10000.
   Eduseqdata_df$start <- (Eduseqdata_df$bin + 1) * 10000
-  
+
   # Compute the end positions for the GRanges object.
   # The end position is defined as start + 1.
   Eduseqdata_df$end <- Eduseqdata_df$start + 1
-  
+
   # Create a GRanges object from the dataframe.
   # - `keep.extra.columns = T` ensures additional columns in the dataframe are preserved.
   # - `ignore.strand = T` specifies that strand information is not required.
@@ -775,39 +838,50 @@ makeGrForEduSeq <- function(Eduseqdata_df) {
                                  keep.extra.columns = TRUE,
                                  ignore.strand = TRUE) %>%
     .[seqnames(.) %in% standard_chromosomes]
-  seqlevels(gr) <- standard_chromosomes 
+  seqlevels(gr) <- standard_chromosomes
   gr
 }
 
 
-# make2SampleCpmGRanges
-# 
-# This function computes the normalized counts per million (CPM) for two sets of BAM files over a specified genomic range and window size.
-# It generates GRanges objects containing CPM values for two samples and computes the quantile-based y-axis limits for visualization.
-# 
-# Args:
-#   chrom: Character string specifying the chromosome to analyze (default: "chr3").
-#   trackStart: Integer indicating the starting position of the genomic region (default: 5000000).
-#   trackEnd: Integer indicating the ending position of the genomic region (default: 55000000).
-#   windowSize: Integer specifying the window size for rolling sum calculation (default: 25000).
-#   stepSize: Integer specifying the step size for the sliding window (default: 5000).
-#   txBamFile1: Path to the first BAM file for the treatment sample (default: "../01_Asynchronous_HCT116/results/mergedDownSampledBams/TICRR_WT_HCT116_anti-GFP_250.bam").
-#   inBamFile1: Path to the first BAM file for the control sample (default: "../01_Asynchronous_HCT116/results/mergedDownSampledBams/WT_HCT116_anti-GFP_250.bam").
-#   txBamFile2: Path to the second BAM file for the treatment sample (default: "../01_Asynchronous_HCT116/results/mergedDownSampledBams/TICRR_WT_HCT116_anti-GFP_1000.bam").
-#   inBamFile2: Path to the second BAM file for the control sample (default: "../01_Asynchronous_HCT116/results/mergedDownSampledBams/WT_HCT116_anti-GFP_1000.bam").
-# 
-# Returns:
-#   A list containing the following elements:
-#   - tx_cpms_gr: GRanges object with CPM values for the treatment samples.
-#   - in_cpms_gr: GRanges object with CPM values for the control samples.
-#   - yLimits: Numeric vector containing the quantile-based y-axis limits for visualization.
-# 
-# Example:
-#   result <- make2SampleCpmGRanges(chrom="chr3", trackStart=1000000, trackEnd=20000000)
-#   tx_cpms_gr <- result$tx_cpms_gr
-#   in_cpms_gr <- result$in_cpms_gr
-#   yLimits <- result$yLimits
-
+#' Compute CPM Tracks and y-axis Limits for Two Samples
+#'
+#' This function computes CPM (counts per million) values for two treatment and two control BAM files
+#' across a specified genomic region, using sliding windows. It returns GRanges objects for each condition
+#' along with quantile-based y-axis limits useful for visualization.
+#'
+#' @param chrom Character. Chromosome to analyze (e.g., "chr3").
+#' @param trackStart Integer. Start coordinate of the genomic region.
+#' @param trackEnd Integer. End coordinate of the genomic region.
+#' @param windowSize Integer. Size of the rolling window for smoothing (default: 25000).
+#' @param stepSize Integer. Step size for sliding the window (default: 5000).
+#' @param txBamFile1 Character. Path to the first treatment BAM file.
+#' @param inBamFile1 Character. Path to the first control/input BAM file.
+#' @param txBamFile2 Character. Path to the second treatment BAM file.
+#' @param inBamFile2 Character. Path to the second control/input BAM file.
+#'
+#' @return A list with three components:
+#' \itemize{
+#'   \item \code{tx_cpms_gr}: A \code{GRanges} object with CPM values for treatment samples.
+#'   \item \code{in_cpms_gr}: A \code{GRanges} object with CPM values for control samples.
+#'   \item \code{yLimits}: A numeric vector of y-axis limits based on CPM distribution quantiles.
+#' }
+#'
+#' @import GenomicRanges
+#' @importFrom IRanges IRanges
+#' @importFrom Rsamtools idxstatsBam
+#' @importFrom bamsignals bamProfile
+#' @importFrom zoo rollapply
+#' @importFrom magrittr %>%
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' result <- make2SampleCpmGRanges(chrom = "chr3", trackStart = 1e6, trackEnd = 20e6)
+#' tx <- result$tx_cpms_gr
+#' in <- result$in_cpms_gr
+#' yLims <- result$yLimits
+#' }
 make2SampleCpmGRanges <- function(chrom="chr3",
                                   trackStart=5000000,
                                   trackEnd=55000000,
@@ -845,10 +919,10 @@ make2SampleCpmGRanges <- function(chrom="chr3",
     gr$cpms <- cbind(CPMS_gr_lst[[1]]$cpms,CPMS_gr_lst[[1]]$cpms) %>% rowMeans
     return(gr)
   }
-  
+
   tx_cpms_gr <- combine2Cpms(txBamFile1,txBamFile2)
   in_cpms_gr <- combine2Cpms(inBamFile1,inBamFile2)
-  
+
   yLimits <- c(
     quantile(
       c(tx_cpms_gr$cpms, in_cpms_gr$cpms),
@@ -859,42 +933,56 @@ make2SampleCpmGRanges <- function(chrom="chr3",
       0.9999
     )
   ) %>% {.*1.2}
-  
+
   outputList <- list(
     "tx_cpms_gr"=tx_cpms_gr,
     "in_cpms_gr"=in_cpms_gr,
     "yLimits"=yLimits
   )
-  
+
   return(outputList)
 }
 
-# makeLog2FcGenomePlot
-# 
-# This function computes the log2 fold change (log2FC) between two sets of BAM files across a specified genomic region 
-# and visualizes the result as a genome plot. The plot shows the log2 fold change between treatment and control 
-# samples in a specific genomic window, using a rolling window approach for the computation.
-# 
-# Args:
-#   chrom: Character string specifying the chromosome to analyze (default: "chr3").
-#   trackStart: Integer indicating the starting position of the genomic region (default: 5000000).
-#   trackEnd: Integer indicating the ending position of the genomic region (default: 55000000).
-#   windowSize: Integer specifying the window size for rolling sum calculation (default: 25000).
-#   stepSize: Integer specifying the step size for the sliding window (default: 5000).
-#   txBamFile1: Path to the first BAM file for the treatment sample (default: "../01_Asynchronous_HCT116/results/mergedDownSampledBams/TICRR_WT_HCT116_anti-GFP_250.bam").
-#   inBamFile1: Path to the first BAM file for the control sample (default: "../01_Asynchronous_HCT116/results/mergedDownSampledBams/WT_HCT116_anti-GFP_250.bam").
-#   txBamFile2: Path to the second BAM file for the treatment sample (default: "../01_Asynchronous_HCT116/results/mergedDownSampledBams/TICRR_WT_HCT116_anti-GFP_1000.bam").
-#   inBamFile2: Path to the second BAM file for the control sample (default: "../01_Asynchronous_HCT116/results/mergedDownSampledBams/WT_HCT116_anti-GFP_1000.bam").
-#   yLimits: Numeric vector specifying the y-axis limits for the plot (default: c(-0.8, 0.8)).
-#   fillColor: Character string specifying the color for the plot fill (default: "#006494").
-# 
-# Returns:
-#   A ggplot object that visualizes the log2 fold change (log2FC) between treatment and control samples over the 
-#   specified genomic region, with the y-axis limited according to the provided yLimits.
-# 
-# Example:
-#   plot <- makeLog2FcGenomePlot(chrom="chr3", trackStart=1000000, trackEnd=20000000, yLimits=c(-1,1))
-#   print(plot)
+#' Generate a Genome-Wide Log2 Fold Change Plot
+#'
+#' This function computes the log2 fold change (log2FC) in read coverage between treatment and input BAM files
+#' over a specified genomic region, and visualizes it as an area plot using a sliding window approach.
+#'
+#' @param chrom Character. Chromosome to analyze (e.g., `"chr3"`).
+#' @param trackStart Integer. Genomic start coordinate of the region to analyze.
+#' @param trackEnd Integer. Genomic end coordinate of the region to analyze.
+#' @param windowSize Integer. Size of the rolling window for smoothing signal (default: 25000).
+#' @param stepSize Integer. Step size between sliding windows (default: 5000).
+#' @param txBamFile Character. Path to the treatment BAM file.
+#' @param inBamFile Character. Path to the control/input BAM file.
+#' @param yLimits Numeric vector of length 2, defining the y-axis limits (default: c(-0.8, 0.8)).
+#' @param autoCalculateYLimits Logical. If TRUE, compute y-axis limits automatically from data (default: TRUE).
+#' @param fillColor Character. Fill color for the area plot (default: "#006494").
+#' @param tx_scaleFactor Numeric or NA. Optional library size scaling factor for treatment BAM (default: NA).
+#' @param in_scaleFactor Numeric or NA. Optional library size scaling factor for input BAM (default: NA).
+#'
+#' @return A `ggplot2` object showing the log2 fold change across the specified region.
+#'
+#' @importFrom Rsamtools idxstatsBam
+#' @importFrom bamsignals bamProfile
+#' @importFrom zoo rollapply
+#' @importFrom GenomicRanges GRanges disjoin
+#' @importFrom IRanges IRanges
+#' @importFrom ggplot2 ggplot geom_area theme_void scale_y_continuous scale_x_continuous theme margin element_text aes
+#' @importFrom magrittr %>%
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' makeLog2FcGenomePlot(
+#'   chrom = "chr3",
+#'   trackStart = 1e6,
+#'   trackEnd = 2e7,
+#'   yLimits = c(-1, 1),
+#'   fillColor = "steelblue"
+#' )
+#' }
 makeLog2FcGenomePlot <- function(chrom="chr3",
                                   trackStart=5000000,
                                   trackEnd=55000000,
@@ -927,11 +1015,11 @@ makeLog2FcGenomePlot <- function(chrom="chr3",
 
   tx_cpms_gr <- makeCPMS(txBamFile,tx_scaleFactor)
   in_cpms_gr <- makeCPMS(inBamFile,in_scaleFactor)
-  
+
   makeDataFrameAndYLimits <- function(txBamFile,inBamFile, txScaleFactor,inScaleFactor){
       tx_cpms_gr <- makeCPMS(txBamFile,txScaleFactor)
       in_cpms_gr <- makeCPMS(inBamFile,inScaleFactor)
-      
+
       makeLg2FcGr <- function(gr_tx,gr_in){
       gr <- disjoin(gr_tx)
       mcols(gr) <- data.frame("score" = log2(gr_tx$cpms/(gr_in$cpms+0.0000000001)))
@@ -940,9 +1028,9 @@ makeLog2FcGenomePlot <- function(chrom="chr3",
       LgFC_gr <- makeLg2FcGr(tx_cpms_gr,in_cpms_gr)
 
 
-      yLimits_layer <- c(quantile(LgFC_gr$score,0.0001),quantile(LgFC_gr$score,0.9999)) %>% 
+      yLimits_layer <- c(quantile(LgFC_gr$score,0.0001),quantile(LgFC_gr$score,0.9999)) %>%
       {.*1.2}
-      
+
       df <- as.data.frame(LgFC_gr) %>%
       {data.frame(x=rowMeans(.[,c(2,3)]),y=.$score)} %>%
       .[is.finite(.$y),]
@@ -969,6 +1057,52 @@ makeLog2FcGenomePlot <- function(chrom="chr3",
   return(ggplt)
 }
 
+#' Overlay Log2 Fold Change Genome Plot for Two Sample Pairs
+#'
+#' This function computes the log2 fold change (log2FC) between treatment and control BAM files
+#' for two distinct sample sets across a specified genomic region, and overlays the results in a single
+#' genome plot. Each set is visualized as a separate filled area using different colors.
+#'
+#' @param chrom Character. Chromosome to analyze (default: `"chr3"`).
+#' @param trackStart Integer. Genomic start coordinate of the region to analyze (default: 5000000).
+#' @param trackEnd Integer. Genomic end coordinate of the region to analyze (default: 55000000).
+#' @param windowSize Integer. Size of the rolling window for smoothing signal (default: 25000).
+#' @param stepSize Integer. Step size between sliding windows (default: 5000).
+#' @param txBamFile_bottom Character. Path to treatment BAM file for the bottom overlay.
+#' @param inBamFile_bottom Character. Path to input/control BAM file for the bottom overlay.
+#' @param txBamFile_top Character. Path to treatment BAM file for the top overlay.
+#' @param inBamFile_top Character. Path to input/control BAM file for the top overlay.
+#' @param yLimits Numeric vector. Y-axis limits for the plot (default: c(-0.8, 0.8)).
+#' @param autoCalculateYLimits Logical. If TRUE, compute y-axis limits automatically (default: TRUE).
+#' @param bottom_fill Character. Fill color for the bottom overlay (default: "#006494").
+#' @param top_fill Character. Fill color for the top overlay (default: "#006494").
+#' @param tx_bottom_scaleFactor Numeric or NA. Optional scaling factor for bottom treatment BAM file (default: NA).
+#' @param in_bottom_scaleFactor Numeric or NA. Optional scaling factor for bottom control BAM file (default: NA).
+#' @param tx_top_scaleFactor Numeric or NA. Optional scaling factor for top treatment BAM file (default: NA).
+#' @param in_top_scaleFactor Numeric or NA. Optional scaling factor for top control BAM file (default: NA).
+#'
+#' @return A `ggplot2` object showing overlaid log2 fold change plots for two sample sets.
+#'
+#' @importFrom Rsamtools idxstatsBam
+#' @importFrom bamsignals bamProfile
+#' @importFrom zoo rollapply
+#' @importFrom GenomicRanges GRanges disjoin
+#' @importFrom IRanges IRanges
+#' @importFrom ggplot2 ggplot geom_area scale_fill_manual scale_y_continuous scale_x_continuous theme_void theme margin element_text aes
+#' @importFrom magrittr %>%
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' makeLog2FcGenomePlotOverlay(
+#'   chrom = "chr3",
+#'   trackStart = 1e6,
+#'   trackEnd = 2e7,
+#'   bottom_fill = "steelblue",
+#'   top_fill = "darkorange"
+#' )
+#' }
 makeLog2FcGenomePlotOverlay <- function(chrom="chr3",
                                   trackStart=5000000,
                                   trackEnd=55000000,
@@ -1007,7 +1141,7 @@ makeLog2FcGenomePlotOverlay <- function(chrom="chr3",
   makeDataFrameAndYLimits <- function(txBamFile,inBamFile, txScaleFactor,inScaleFactor){
     tx_cpms_gr <- makeCPMS(txBamFile,txScaleFactor)
     in_cpms_gr <- makeCPMS(inBamFile,inScaleFactor)
-    
+
     makeLg2FcGr <- function(gr_tx,gr_in){
     gr <- disjoin(gr_tx)
     mcols(gr) <- data.frame("score" = log2(gr_tx$cpms/(gr_in$cpms+0.0000000001)))
@@ -1016,9 +1150,9 @@ makeLog2FcGenomePlotOverlay <- function(chrom="chr3",
     LgFC_gr <- makeLg2FcGr(tx_cpms_gr,in_cpms_gr)
 
 
-    yLimits_layer <- c(quantile(LgFC_gr$score,0.0001),quantile(LgFC_gr$score,0.9999)) %>% 
+    yLimits_layer <- c(quantile(LgFC_gr$score,0.0001),quantile(LgFC_gr$score,0.9999)) %>%
     {.*1.2}
-    
+
     df <- as.data.frame(LgFC_gr) %>%
     {data.frame(x=rowMeans(.[,c(2,3)]),y=.$score)} %>%
     .[is.finite(.$y),]
@@ -1052,6 +1186,49 @@ makeLog2FcGenomePlotOverlay <- function(chrom="chr3",
   return(ggplt)
 }
 
+#' Plot Log2 Fold Change Between Two Sample Pairs Using Mean CPM
+#'
+#' This function computes the average CPM (counts per million) across two treatment and two control BAM files
+#' within a specified genomic region, calculates the log2 fold change (log2FC), and plots the result.
+#' The signal is smoothed using a rolling window and visualized as a filled area plot.
+#'
+#' @param chrom Character. Chromosome to analyze (default: `"chr3"`).
+#' @param trackStart Integer. Start coordinate of the genomic region (default: 5000000).
+#' @param trackEnd Integer. End coordinate of the genomic region (default: 55000000).
+#' @param windowSize Integer. Size of the window used for rolling sum (default: 25000).
+#' @param stepSize Integer. Step size between sliding windows (default: 5000).
+#' @param txBamFile1 Character. Path to the first treatment BAM file.
+#' @param inBamFile1 Character. Path to the first input/control BAM file.
+#' @param txBamFile2 Character. Path to the second treatment BAM file.
+#' @param inBamFile2 Character. Path to the second input/control BAM file.
+#' @param yLimits Numeric vector. Limits for the y-axis (default: c(-0.8, 0.8)).
+#' @param fillColor Character. Fill color for the area plot (default: "#006494").
+#'
+#' @return A `ggplot2` object visualizing the log2 fold change between average treatment and control CPMs
+#'         across the genomic region.
+#'
+#' @importFrom Rsamtools idxstatsBam
+#' @importFrom bamsignals bamProfile
+#' @importFrom zoo rollapply
+#' @importFrom GenomicRanges GRanges disjoin
+#' @importFrom IRanges IRanges
+#' @importFrom ggplot2 ggplot geom_area scale_y_continuous scale_x_continuous theme_void theme margin aes
+#' @importFrom magrittr %>%
+#'
+#' @export
+#'
+#' @examples
+#' \dontrun{
+#' makeLog2FcGenomePlot_2SampleMean(
+#'   chrom = "chr3",
+#'   trackStart = 1e6,
+#'   trackEnd = 2e7,
+#'   txBamFile1 = "treatment_250.bam",
+#'   inBamFile1 = "input_250.bam",
+#'   txBamFile2 = "treatment_1000.bam",
+#'   inBamFile2 = "input_1000.bam"
+#' )
+#' }
 makeLog2FcGenomePlot_2SampleMean <- function(chrom="chr3",
                                   trackStart=5000000,
                                   trackEnd=55000000,
@@ -1091,10 +1268,10 @@ makeLog2FcGenomePlot_2SampleMean <- function(chrom="chr3",
     gr$cpms <- cbind(CPMS_gr_lst[[1]]$cpms,CPMS_gr_lst[[1]]$cpms) %>% rowMeans
     return(gr)
   }
-  
+
   tx_cpms_gr <- combine2Cpms(txBamFile1,txBamFile2)
   in_cpms_gr <- combine2Cpms(inBamFile1,inBamFile2)
-  
+
   yLimits <- c(
     quantile(
       c(tx_cpms_gr$cpms, in_cpms_gr$cpms),
@@ -1105,13 +1282,13 @@ makeLog2FcGenomePlot_2SampleMean <- function(chrom="chr3",
       0.9999
     )
   ) %>% {.*1.2}
-  
+
   outputList <- list(
     "tx_cpms_gr"=tx_cpms_gr,
     "in_cpms_gr"=in_cpms_gr,
     "yLimits"=yLimits
   )
-  
+
   makeLg2FcGr <- function(gr_tx,gr_in){
   gr <- disjoin(gr_tx)
   mcols(gr) <- data.frame(
@@ -1222,7 +1399,7 @@ makeAggregatePlotWithRibbons <- function(
       meanNormalizedCounts <- apply(normalizedCounts,1,mean,na.rm=TRUE)
       return(meanNormalizedCounts)
     }
-  
+
   # Generate matrices of normalized counts
   mergedBamsIn_normCounts_lst <- lapply(mergedBamsIn, function(bamList) {
     lapply(bamList, makeNormalizedMatrix)
@@ -1264,10 +1441,10 @@ makeAggregatePlotWithRibbons <- function(
   df <- lapply(groups,makeNormalizedCountDataframe) %>%
     do.call(rbind,.)
 
-  ggplot(data=df, aes(x=x, y=y, color=group, ymin=min, ymax=max)) + 
-  geom_line() + 
-  theme_minimal() + 
-  #scale_color_manual(values = c("siControl" = siControl_color, "siTreslin" = MTBP_color)) + 
+  ggplot(data=df, aes(x=x, y=y, color=group, ymin=min, ymax=max)) +
+  geom_line() +
+  theme_minimal() +
+  #scale_color_manual(values = c("siControl" = siControl_color, "siTreslin" = MTBP_color)) +
   scale_x_continuous(
     breaks=c(1,386,772),
     labels = c("-2kb","Summit","+2kb"), expand=c(0,0)) +
@@ -1277,9 +1454,9 @@ makeAggregatePlotWithRibbons <- function(
 
 #' Generate an UpSet plot of reproducible and replicate peaks
 #'
-#' This function creates an UpSet plot showing the intersection between a set of reproducible peaks 
-#' and multiple replicate peak sets. It pads replicate peak lists with dummy values to ensure that 
-#' the set size bars in the UpSet plot accurately reflect the total number of peaks in each replicate. 
+#' This function creates an UpSet plot showing the intersection between a set of reproducible peaks
+#' and multiple replicate peak sets. It pads replicate peak lists with dummy values to ensure that
+#' the set size bars in the UpSet plot accurately reflect the total number of peaks in each replicate.
 #' The final plot includes only reproducible peaks in the intersection matrix but uses the accurate set size bars.
 #'
 #' @param reproduciblePeaksPath Character string. File path to a BED file of reproducible peaks.
@@ -1377,8 +1554,8 @@ makeUpSetPlot <- function(
 
 #' Identify reproducible peaks across multiple replicates
 #'
-#' This function identifies peaks from a query set that overlap with a minimum number of replicates. 
-#' It returns only those peaks from the query set that are present in at least \code{overlapCountThreshold} 
+#' This function identifies peaks from a query set that overlap with a minimum number of replicates.
+#' It returns only those peaks from the query set that are present in at least \code{overlapCountThreshold}
 #' of the GRanges objects in \code{subjectPeaksList}.
 #'
 #' @param queryPeaks A \code{GRanges} object representing the set of query peaks (e.g., reproducible peaks).
@@ -1389,14 +1566,14 @@ makeUpSetPlot <- function(
 #' @examples
 #' # Example usage:
 #' # reproduciblePeaks <- GetReproduciblePeaks(queryPeaks, listOfReplicatePeaks, overlapCountThreshold = 4)
-#' 
+#'
 #' @import GenomicRanges
 #' @export
 GetReproduciblePeaks <- function(queryPeaks,subjectPeaksList,overlapCountThreshold=5){
   lapply(subjectPeaksList,function(gr){
     queryPeaks %over% gr %>%
       as.numeric
-  }) %>% 
+  }) %>%
     do.call(cbind,.) %>%
     {rowSums(.)>=overlapCountThreshold} %>%
     queryPeaks[.]
@@ -1405,8 +1582,8 @@ GetReproduciblePeaks <- function(queryPeaks,subjectPeaksList,overlapCountThresho
 
 #' Generate a data frame of overlap counts across replicate peak sets
 #'
-#' This function calculates how many peaks from a reproducible peak set are supported by at least 
-#' a given number of replicate peak sets. It returns a data frame where each row corresponds to 
+#' This function calculates how many peaks from a reproducible peak set are supported by at least
+#' a given number of replicate peak sets. It returns a data frame where each row corresponds to
 #' a different overlap threshold.
 #'
 #' @param reproduciblePeaksPath Character string. File path to a BED file containing reproducible peaks.
@@ -1421,7 +1598,7 @@ GetReproduciblePeaks <- function(queryPeaks,subjectPeaksList,overlapCountThresho
 #'   replicatePeakPaths = c("rep1.bed", "rep2.bed", "rep3.bed"),
 #'   targetName = "MTBP"
 #' )
-#' 
+#'
 #' @export
 makeOverlapThresholdSummary <- function(
   reproduciblePeaksPath = "../MakeReproduciblePeaks/MTBP_Peaks_Reproducible_6.narrowPeak",
@@ -1451,8 +1628,8 @@ makeOverlapThresholdSummary <- function(
 
 #' Generate a Correlation Matrix of log2 Fold Change in Read Counts
 #'
-#' This function calculates the log2 fold change (log2FC) of read counts 
-#' across a set of genomic regions and visualizes the sample-to-sample 
+#' This function calculates the log2 fold change (log2FC) of read counts
+#' across a set of genomic regions and visualizes the sample-to-sample
 #' correlation matrix using `corrplot`.
 #'
 #' @param peakRegionsFile Path to a BED file containing the genomic regions of interest.
@@ -1482,27 +1659,27 @@ generateCorrelationMatrixOfReadLg2FcInRanges <- function(
 ) {
   # Load peak regions as GRanges
   peakRegions <- readBed(peakRegionsFile)
-  
+
   # Count reads in peaks for treatment and input samples
   treatmentCounts <- lapply(treatmentBamPaths, bamsignals::bamCount, gr = peakRegions, paired.end = c("midpoint"))
   inputCounts <- lapply(inputBamPaths, bamsignals::bamCount, gr = peakRegions, paired.end = c("midpoint"))
-  
+
   # Combine counts into matrices
   treatmentMatrix <- do.call(cbind, treatmentCounts)
   inputMatrix <- do.call(cbind, inputCounts)
-  
+
   # Compute log2 fold change: log2(Tx / Input)
   log2FCMatrix <- log2(treatmentMatrix / (inputMatrix + 1e-7))
-  
+
   # Label columns for easier interpretation
   colnames(log2FCMatrix) <- sampleLabels
 
   # Scale values
   log2FCMatrix <- scale(log2FCMatrix)
-  
+
   # Compute correlation matrix
   correlationMatrix <- cor(log2FCMatrix, method = correlationMethod)
-  
+
   # Visualize correlation matrix
   list(corrplot::corrplot(correlationMatrix, method = "number"),
     correlationMatrix,
@@ -1511,8 +1688,8 @@ generateCorrelationMatrixOfReadLg2FcInRanges <- function(
 
 #' Generate a Library-Normalized Read Count Matrix for Genomic Regions
 #'
-#' This function computes a matrix of read counts across sliding windows 
-#' centered on specified genomic regions, normalized by library size (CPM). 
+#' This function computes a matrix of read counts across sliding windows
+#' centered on specified genomic regions, normalized by library size (CPM).
 #' The output is suitable for metaplot or heatmap visualization.
 #'
 #' @param bamPath Character string. Path to the BAM file.
@@ -1544,10 +1721,10 @@ makeLibraryNormalizedMatrix <- function(
 ) {
   # Define chromosomes to analyze
   chromosomes <- paste0("chr", 1:22)
-  
+
   # Resize regions to the desired plotting range
   Ranges <- resize(Ranges, width = plottingRange, fix = "center")
-  
+
   # Compute raw count matrix by chromosome
   countMatrix <- mclapply(chromosomes, function(chr) {
     chrRanges <- Ranges[seqnames(Ranges) == chr]
@@ -1571,7 +1748,7 @@ makeLibraryNormalizedMatrix <- function(
       subset(seqnames %in% chromosomes) %>%
       with(sum(as.numeric(mapped))) / 1e6
   }
-  
+
   totalReads <- getTotalReadCountInMillions(bamPath)
 
   # Normalize by total reads (CPM)
