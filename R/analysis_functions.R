@@ -1909,7 +1909,6 @@ plotLog2fcHeatmap <- function(
     viridis::viridis(length(color_breaks))
   )
 
-  ht_opt$message <- FALSE
   heatmap_plot <- ComplexHeatmap::Heatmap(
     log2fc_matrix_sorted,
     cluster_columns = FALSE,
