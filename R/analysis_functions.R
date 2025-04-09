@@ -1849,7 +1849,8 @@ plot_two_sample_euler <- function(gr1, gr2, labels = c("Set1", "Set2"), fills = 
 plotLog2fcHeatmap <- function(
     tx_bam,
     in_bam,
-    peaks_dir,
+    summit_file_paths,
+    peak_file_paths,
     plotting_range = 4001,
     window_size = 150,
     step_size = 5,

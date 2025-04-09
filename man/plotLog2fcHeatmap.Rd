@@ -7,7 +7,8 @@
 plotLog2fcHeatmap(
   tx_bam,
   in_bam,
-  peaks_dir,
+  summit_file_paths,
+  peak_file_paths,
   plotting_range = 4001,
   window_size = 150,
   step_size = 5,
@@ -21,8 +22,6 @@ plotLog2fcHeatmap(
 
 \item{in_bam}{Path to input/control BAM file.}
 
-\item{peaks_dir}{Directory containing summit and reproducible peak BED files.}
-
 \item{plotting_range}{Width (in bp) around each summit for signal profiling. Default: 4001}
 
 \item{window_size}{Size of the rolling window in bp. Default: 150}
@@ -34,6 +33,8 @@ plotLog2fcHeatmap(
 \item{chromosomes}{Vector of chromosomes to include. Default: paste0("chr", 1:22)}
 
 \item{color_breaks}{Numeric vector of values to define color scale (must match length of colors). Default: c(-0.5, 0, 0.5, 1, 2)}
+
+\item{peaks_dir}{Directory containing summit and reproducible peak BED files.}
 }
 \value{
 A list with two elements:
