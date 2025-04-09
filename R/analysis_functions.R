@@ -676,9 +676,6 @@ createAndWriteUnifiedPeakSet <- function(pkFiles, smtFiles,outputPath){
 #'
 #' @export
 hg19ToHg38Liftover <- function(hg19BedInput,hg38BedOutput){
-  library(rtracklayer)
-  library(liftOver)
-
   # Define the URL of the chain file
   chain_url <- "http://hgdownload.soe.ucsc.edu/goldenPath/hg19/liftOver/hg19ToHg38.over.chain.gz"
 
