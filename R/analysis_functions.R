@@ -1782,11 +1782,9 @@ importBED <- function(bedPath, chromosomesToImport = chromosomes) {
 #' plot <- plot_two_sample_euler(kumagai_peaks_gr, noble_peaks_gr, labels = c("Kumagai", "Noble"))
 #' print(plot)
 #'
-#' @importFrom GenomicRanges reduce
-#' @importFrom GenomicRanges `%over%`
-#' @importFrom eulerr euler
-#' @importFrom eulerr plot
-#' @importFrom magrittr %>%
+#' @import GenomicRanges
+#' @import eulerr
+#' @import magrittr
 #'
 #' @export
 plot_two_sample_euler <- function(gr1, gr2, labels = c("Set1", "Set2"), fills = c("grey", "white")) {
@@ -1798,9 +1796,9 @@ plot_two_sample_euler <- function(gr1, gr2, labels = c("Set1", "Set2"), fills = 
 
   # Create binary overlap matrix
   attendance_test_df <- data.frame(
-    !!labels[1] := reduced_peaks_gr %over% gr1,
-    !!labels[2] := reduced_peaks_gr %over% gr2
-  )
+    reduced_peaks_gr %over% gr1,
+    reduced_peaks_gr %over% gr2
+  ) %>% set_names(.,labels)
 
   # Fit Euler diagram
   euler_fit <- eulerr::euler(attendance_test_df)
