@@ -18,32 +18,34 @@ plotLog2fcHeatmap(
 )
 }
 \arguments{
-\item{tx_bam}{Path to treatment BAM file.}
+\item{tx_bam}{Character. Path to treatment BAM file.}
 
-\item{in_bam}{Path to input/control BAM file.}
+\item{in_bam}{Character. Path to input/control BAM file.}
 
-\item{plotting_range}{Width (in bp) around each summit for signal profiling. Default: 4001}
+\item{summit_file_paths}{Named character vector. Paths to summit BED files for each group (e.g., TRESLIN, MTBP, Both).}
 
-\item{window_size}{Size of the rolling window in bp. Default: 150}
+\item{peak_file_paths}{Named character vector. Paths to reproducible peak BED files for each group.}
 
-\item{step_size}{Step size for sliding window. Default: 5}
+\item{plotting_range}{Integer. Width (in bp) around each summit for signal profiling. Default: 4001.}
 
-\item{core_count}{Number of CPU cores for parallel processing. Default: 8}
+\item{window_size}{Integer. Size of the rolling window in bp. Default: 150.}
 
-\item{chromosomes}{Vector of chromosomes to include. Default: paste0("chr", 1:22)}
+\item{step_size}{Integer. Step size for sliding window. Default: 5.}
 
-\item{color_breaks}{Numeric vector of values to define color scale (must match length of colors). Default: c(-0.5, 0, 0.5, 1, 2)}
+\item{core_count}{Integer. Number of CPU cores for parallel processing. Default: 8.}
 
-\item{peaks_dir}{Directory containing summit and reproducible peak BED files.}
+\item{chromosomes}{Character vector. Chromosomes to include. Default: paste0("chr", 1:22).}
+
+\item{color_breaks}{Numeric vector. Values to define color scale (length should match number of colors). Default: c(-0.5, 0, 0.5, 1, 2).}
 }
 \value{
 A list with two elements:
-  \describe{
-    \item{`average_profile_plot`}{Line plot of average log2 fold change per group.}
-    \item{`heatmap_plot`}{ComplexHeatmap object showing per-region log2 fold change.}
-  }
+\describe{
+  \item{average_profile_plot}{A ggplot2 line plot showing average log2 fold change per position per group.}
+  \item{heatmap_plot}{A ComplexHeatmap object showing per-region log2 fold change.}
+}
 }
 \description{
 This function computes and visualizes signal profiles (log2 fold change) around summit regions.
-It outputs a ComplexHeatmap object and a ggplot line plot showing average signal per group.
+It outputs a ComplexHeatmap object and a ggplot2 line plot showing average signal per group.
 }
