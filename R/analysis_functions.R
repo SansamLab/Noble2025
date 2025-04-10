@@ -2078,51 +2078,53 @@ make2SampleLog2FcCoverageDataTrack <- function(chromosome="chr3",
 }
 
 
-#' Create Genome Tracks for Asynchronous HCT116 Repliseq and Origin Mapping
+#' Create Genome Track Plot for TRESLIN, MTBP, and Replication Features
 #'
-#' Generates a list of genome tracks including ideogram, Repli-seq, origin mapping data
-#' (SNS-seq, Ini-seq), peak annotations, and log2 fold change signal tracks for TRESLIN and MTBP.
+#' Generates a genome browser-style figure for a specified genomic region,
+#' visualizing log2 fold change signals from TRESLIN and MTBP ChIP-seq,
+#' peak annotations, and origin mapping (Repli-seq, SNS-seq, Ini-seq).
+#' Allows for customizable track inclusion and sizing via a named vector input.
 #'
-#' @param range_to_plot Genomic range to plot in UCSC-style format, e.g., "chr1:40000000-120000000". Default: "chr1:40000000-120000000"
-#' @param treslin_tx_bam_1_path Path to TRESLIN treatment BAM file 1.
-#' @param treslin_in_bam_1_path Path to TRESLIN input BAM file 1.
-#' @param treslin_tx_bam_2_path Path to TRESLIN treatment BAM file 2.
-#' @param treslin_in_bam_2_path Path to TRESLIN input BAM file 2.
-#' @param treslin_color Color for TRESLIN tracks. Default: "#006494"
-#' @param treslin_log2fc_ylimits Y-axis limits for TRESLIN log2FC track. Default: c(-0.8, 0.8)
-#' @param treslin_log2fc_step_size Step size for TRESLIN log2FC window. Default: 5000
-#' @param treslin_log2fc_window_size Window size for TRESLIN log2FC window. Default: 25000
-#' @param mtbp_tx_bam_1_path Path to MTBP treatment BAM file 1.
-#' @param mtbp_in_bam_1_path Path to MTBP input BAM file 1.
-#' @param mtbp_tx_bam_2_path Path to MTBP treatment BAM file 2.
-#' @param mtbp_in_bam_2_path Path to MTBP input BAM file 2.
-#' @param mtbp_color Color for MTBP tracks. Default: "#55C1FF"
-#' @param mtbp_log2fc_ylimits Y-axis limits for MTBP log2FC track. Default: c(-0.8, 0.8)
-#' @param mtbp_log2fc_step_size Step size for MTBP log2FC window. Default: 5000
-#' @param mtbp_log2fc_window_size Window size for MTBP log2FC window. Default: 25000
-#' @param treslin_peaks_bed_path BED file path for TRESLIN peaks.
-#' @param mtbp_peaks_bed_path BED file path for MTBP peaks.
-#' @param snsseq_bed_path BED file path for SNS-seq origins.
-#' @param snsseq_track_color Color for SNS-seq track. Default: "#C1666B"
-#' @param iniseq_bed_path BED file path for Ini-seq origins.
-#' @param iniseq_track_color Color for Ini-seq track. Default: "#D4B483"
-#' @param repliseq_gr_rds_path RDS file path for Repli-seq GRanges object.
-#' @param ideogram_csv_path CSV path for ideogram data.
-#' @param highlight_regions_starts Start coordinates of highlight boxes.
-#' @param highlight_regions_widths Widths of highlight boxes.
-#' @param track_sizes Named vector of track heights for plotting.
-#' @param figure_width Width of the final figure (in inches). Default: 16
-#' @param figure_height Height of the final figure (in inches). Default: 16
-#' @param genome_build Genome build identifier. Default: "hg38"
+#' @param range_to_plot UCSC-style genomic region to visualize (e.g. "chr1:40000000-120000000").
+#' @param treslin_tx_bam_1_path Path to TRESLIN ChIP replicate 1 BAM file.
+#' @param treslin_in_bam_1_path Path to input control for TRESLIN replicate 1.
+#' @param treslin_tx_bam_2_path Path to TRESLIN ChIP replicate 2 BAM file.
+#' @param treslin_in_bam_2_path Path to input control for TRESLIN replicate 2.
+#' @param treslin_color Color for TRESLIN signal and peaks. Default: "#006494"
+#' @param treslin_log2fc_ylimits Y-axis limits for TRESLIN log2FC signal. Default: c(-0.8, 0.8)
+#' @param treslin_log2fc_step_size Step size for sliding window of TRESLIN signal. Default: 5000
+#' @param treslin_log2fc_window_size Window size for summing reads (TRESLIN). Default: 25000
+#' @param mtbp_tx_bam_1_path Path to MTBP ChIP replicate 1 BAM file.
+#' @param mtbp_in_bam_1_path Path to input control for MTBP replicate 1.
+#' @param mtbp_tx_bam_2_path Path to MTBP ChIP replicate 2 BAM file.
+#' @param mtbp_in_bam_2_path Path to input control for MTBP replicate 2.
+#' @param mtbp_color Color for MTBP signal and peaks. Default: "#55C1FF"
+#' @param mtbp_log2fc_ylimits Y-axis limits for MTBP log2FC signal. Default: c(-0.8, 0.8)
+#' @param mtbp_log2fc_step_size Step size for sliding window of MTBP signal. Default: 5000
+#' @param mtbp_log2fc_window_size Window size for summing reads (MTBP). Default: 25000
+#' @param treslin_peaks_bed_path Path to BED file with TRESLIN peaks.
+#' @param mtbp_peaks_bed_path Path to BED file with MTBP peaks.
+#' @param snsseq_bed_path Path to BED file for SNS-seq origins.
+#' @param snsseq_track_color Color for SNS-seq annotation track. Default: "#C1666B"
+#' @param iniseq_bed_path Path to BED file for Ini-seq origins.
+#' @param iniseq_track_color Color for Ini-seq annotation track. Default: "#D4B483"
+#' @param repliseq_gr_rds_path Path to RDS file containing Repli-seq GRanges.
+#' @param ideogram_csv_path Path to CSV file with ideogram data (columns: chrom, chromStart, chromEnd, name, gieStain).
+#' @param highlight_regions_starts Numeric vector of start coordinates for highlight regions.
+#' @param highlight_regions_widths Numeric vector of widths for highlight regions.
+#' @param figure_width Width of output figure in inches. Default: 16
+#' @param figure_height Height of output figure in inches. Default: 16
+#' @param genome_build Genome build identifier (e.g. "hg38"). Default: "hg38"
+#' @param tracks_to_plot_with_sizes Named numeric vector. Names must match track objects created inside the function. Values control their heights. Tracks appear in the specified order.
 #'
-#' @return A grid graphics object of the full genome track plot.
+#' @return A grid graphics object representing the genome track plot.
+#'
 #' @import Gviz
 #' @import grid
-#' @import utils
 #' @import magrittr
-#' @import viridis
-#' @import circlize
+#' @import utils
 #' @export
+
 createAsynchronousTracksWithRepliseq <- function(
     range_to_plot = "chr1:40000000-120000000",
     treslin_tx_bam_1_path,
@@ -2151,11 +2153,24 @@ createAsynchronousTracksWithRepliseq <- function(
     ideogram_csv_path,
     highlight_regions_starts,
     highlight_regions_widths,
-    track_sizes,
     figure_width = 16,
     figure_height = 16,
-    genome_build = "hg38"
-) {
+    genome_build = "hg38",
+    tracks_to_plot_with_sizes = c(
+      "itrack" = 0.4,
+      "axisTrack" = 0.8,
+      "MTBP_25k_Lg2FC_dTrack" = 1,
+      "MTBP_Unified_Peaks_Track" = 0.5,
+      "TRESLIN_25k_Lg2FC_dTrack" = 1,
+      "TRESLIN_Unified_Peaks_Track" = 0.5,
+      "IniSeqTrack" = 0.5,
+      "SnsSeq_Track" = 0.5,
+      "dTrack_Repliseq" = 1
+    )
+){
+  tracks_to_plot <- as.list(names(tracks_to_plot_with_sizes))
+  track_sizes <- as.numeric(tracks_to_plot_with_sizes)
+
   message("Parsing range: ", range_to_plot)
   range_to_plot_split <- strsplit(range_to_plot, ":|-") %>%
     unlist() %>%
@@ -2248,17 +2263,9 @@ createAsynchronousTracksWithRepliseq <- function(
     yLimits = mtbp_log2fc_ylimits
   )
 
-  message("Compiling tracks...")
-  tracksToPlot <- list(
-    itrack, axisTrack,
-    MTBP_25k_Lg2FC_dTrack, MTBP_Unified_Peaks_Track,
-    TRESLIN_25k_Lg2FC_dTrack, TRESLIN_Unified_Peaks_Track,
-    IniSeqTrack, SnsSeq_Track, dTrack_Repliseq
-  )
-
   message("Creating highlight track and rendering figure...")
   ht <- HighlightTrack(
-    trackList = tracksToPlot,
+    trackList = tracks_to_plot,
     start = highlight_regions_starts,
     width = highlight_regions_widths,
     chromosome = chromosome,
