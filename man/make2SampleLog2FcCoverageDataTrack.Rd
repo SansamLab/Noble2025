@@ -5,7 +5,7 @@
 \title{Create a DataTrack for 2-Sample Log2 Fold Change (Log2FC) Coverage Data}
 \usage{
 make2SampleLog2FcCoverageDataTrack(
-  chomosome = "chr3",
+  chromosome = "chr3",
   start = 5e+06,
   end = 5.5e+07,
   windowSize = 25000,
@@ -24,8 +24,6 @@ make2SampleLog2FcCoverageDataTrack(
 )
 }
 \arguments{
-\item{chomosome}{The chromosome for the genomic region of interest.}
-
 \item{start}{The start position of the genomic region.}
 
 \item{end}{The end position of the genomic region.}
@@ -45,6 +43,8 @@ make2SampleLog2FcCoverageDataTrack(
 \item{trackName}{The name for the DataTrack.}
 
 \item{HistogramColor}{The color for the histogram in the DataTrack.}
+
+\item{chomosome}{The chromosome for the genomic region of interest.}
 }
 \value{
 A DataTrack object for 2-sample Log2FC coverage data.

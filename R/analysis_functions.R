@@ -1760,7 +1760,7 @@ makeLibraryNormalizedMatrix <- function(
 #' @import GenomeInfoDb
 #' @export
 importBED <- function(bedPath, chromosomesToImport = chromosomes) {
-  chromosomesToImport <- as.character(chromosomesToImport)
+  chromToImport <- as.character(chromosomesToImport)
 
   # Read first line to detect if it contains a header
   first_row <- read.table(bedPath, nrows = 1, stringsAsFactors = FALSE)
@@ -1779,7 +1779,7 @@ importBED <- function(bedPath, chromosomesToImport = chromosomes) {
 
   # Convert to GRanges and restrict to specified chromosomes
   gr <- GenomicRanges::makeGRangesFromDataFrame(bed_df, keep.extra.columns = TRUE)
-  seqlevels(gr, pruning.mode = "coarse") <- chromosomesToImport
+  seqlevels(gr, pruning.mode = "coarse") <- chromToImport
 
   return(gr)
 }
@@ -2015,7 +2015,7 @@ plotLog2fcHeatmap <- function(
 #'                                          trackName="Log2FC", HistogramColor="#1b9e77")
 #' }
 #'
-make2SampleLog2FcCoverageDataTrack <- function(chomosome="chr3",
+make2SampleLog2FcCoverageDataTrack <- function(chromosome="chr3",
                                                start=5000000,
                                                end=55000000,
                                                windowSize=25000,
@@ -2179,13 +2179,13 @@ createAsynchronousTracksWithRepliseq <- function(
 
   # Origin tracks
   SnsSeq_Track <- AnnotationTrack(
-    range = importBED(snsseq_bed_path, range_to_plot_split["chromosome"]),
+    range = importBED(snsseq_bed_path, chromosomesToImport = range_to_plot_split["chromosome"]),
     name = "SNSSeq", col = snsseq_track_color,
     fill = snsseq_track_color, col.line = snsseq_track_color,
     showTitle = FALSE, genome = genome_build
   )
   IniSeqTrack <- AnnotationTrack(
-    range = importBED(iniseq_bed_path, range_to_plot_split["chromosome"]),
+    range = importBED(iniseq_bed_path, chromosomesToImport = range_to_plot_split["chromosome"]),
     name = "IniSeq", col = iniseq_track_color,
     fill = iniseq_track_color, col.line = iniseq_track_color,
     showTitle = FALSE, genome = genome_build
@@ -2193,7 +2193,7 @@ createAsynchronousTracksWithRepliseq <- function(
 
   # Peak tracks
   MTBP_Unified_Peaks_Track <- AnnotationTrack(
-    range = importBED(mtbp_peaks_bed_path, range_to_plot_split["chromosome"]),
+    range = importBED(mtbp_peaks_bed_path, chromosomesToImport = range_to_plot_split["chromosome"]),
     name = "MTBP peaks", col = mtbp_color,
     fill = mtbp_color, col.line = mtbp_color,
     showTitle = FALSE, genome = genome_build
