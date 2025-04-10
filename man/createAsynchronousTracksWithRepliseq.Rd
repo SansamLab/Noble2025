@@ -2,7 +2,7 @@
 % Please edit documentation in R/analysis_functions.R
 \name{createAsynchronousTracksWithRepliseq}
 \alias{createAsynchronousTracksWithRepliseq}
-\title{Create Genome Tracks for Asynchronous HCT116 Repliseq and Origin Mapping}
+\title{Create Genome Track Plot for TRESLIN, MTBP, and Replication Features}
 \usage{
 createAsynchronousTracksWithRepliseq(
   range_to_plot = "chr1:40000000-120000000",
@@ -32,79 +32,83 @@ createAsynchronousTracksWithRepliseq(
   ideogram_csv_path,
   highlight_regions_starts,
   highlight_regions_widths,
-  track_sizes,
   figure_width = 16,
   figure_height = 16,
-  genome_build = "hg38"
+  genome_build = "hg38",
+  tracks_to_plot_with_sizes = c(itrack = 0.4, axisTrack = 0.8, MTBP_Lg2FC_dTrack = 1,
+    MTBP_Unified_Peaks_Track = 0.5, TRESLIN_Lg2FC_dTrack = 1, TRESLIN_Unified_Peaks_Track
+    = 0.5, IniSeqTrack = 0.5, SnsSeq_Track = 0.5, dTrack_Repliseq = 1)
 )
 }
 \arguments{
-\item{range_to_plot}{Genomic range to plot in UCSC-style format, e.g., "chr1:40000000-120000000". Default: "chr1:40000000-120000000"}
+\item{range_to_plot}{UCSC-style genomic region to visualize (e.g. "chr1:40000000-120000000").}
 
-\item{treslin_tx_bam_1_path}{Path to TRESLIN treatment BAM file 1.}
+\item{treslin_tx_bam_1_path}{Path to TRESLIN ChIP replicate 1 BAM file.}
 
-\item{treslin_in_bam_1_path}{Path to TRESLIN input BAM file 1.}
+\item{treslin_in_bam_1_path}{Path to input control for TRESLIN replicate 1.}
 
-\item{treslin_tx_bam_2_path}{Path to TRESLIN treatment BAM file 2.}
+\item{treslin_tx_bam_2_path}{Path to TRESLIN ChIP replicate 2 BAM file.}
 
-\item{treslin_in_bam_2_path}{Path to TRESLIN input BAM file 2.}
+\item{treslin_in_bam_2_path}{Path to input control for TRESLIN replicate 2.}
 
-\item{treslin_color}{Color for TRESLIN tracks. Default: "#006494"}
+\item{treslin_color}{Color for TRESLIN signal and peaks. Default: "#006494"}
 
-\item{treslin_log2fc_ylimits}{Y-axis limits for TRESLIN log2FC track. Default: c(-0.8, 0.8)}
+\item{treslin_log2fc_ylimits}{Y-axis limits for TRESLIN log2FC signal. Default: c(-0.8, 0.8)}
 
-\item{treslin_log2fc_step_size}{Step size for TRESLIN log2FC window. Default: 5000}
+\item{treslin_log2fc_step_size}{Step size for sliding window of TRESLIN signal. Default: 5000}
 
-\item{treslin_log2fc_window_size}{Window size for TRESLIN log2FC window. Default: 25000}
+\item{treslin_log2fc_window_size}{Window size for summing reads (TRESLIN). Default: 25000}
 
-\item{mtbp_tx_bam_1_path}{Path to MTBP treatment BAM file 1.}
+\item{mtbp_tx_bam_1_path}{Path to MTBP ChIP replicate 1 BAM file.}
 
-\item{mtbp_in_bam_1_path}{Path to MTBP input BAM file 1.}
+\item{mtbp_in_bam_1_path}{Path to input control for MTBP replicate 1.}
 
-\item{mtbp_tx_bam_2_path}{Path to MTBP treatment BAM file 2.}
+\item{mtbp_tx_bam_2_path}{Path to MTBP ChIP replicate 2 BAM file.}
 
-\item{mtbp_in_bam_2_path}{Path to MTBP input BAM file 2.}
+\item{mtbp_in_bam_2_path}{Path to input control for MTBP replicate 2.}
 
-\item{mtbp_color}{Color for MTBP tracks. Default: "#55C1FF"}
+\item{mtbp_color}{Color for MTBP signal and peaks. Default: "#55C1FF"}
 
-\item{mtbp_log2fc_ylimits}{Y-axis limits for MTBP log2FC track. Default: c(-0.8, 0.8)}
+\item{mtbp_log2fc_ylimits}{Y-axis limits for MTBP log2FC signal. Default: c(-0.8, 0.8)}
 
-\item{mtbp_log2fc_step_size}{Step size for MTBP log2FC window. Default: 5000}
+\item{mtbp_log2fc_step_size}{Step size for sliding window of MTBP signal. Default: 5000}
 
-\item{mtbp_log2fc_window_size}{Window size for MTBP log2FC window. Default: 25000}
+\item{mtbp_log2fc_window_size}{Window size for summing reads (MTBP). Default: 25000}
 
-\item{treslin_peaks_bed_path}{BED file path for TRESLIN peaks.}
+\item{treslin_peaks_bed_path}{Path to BED file with TRESLIN peaks.}
 
-\item{mtbp_peaks_bed_path}{BED file path for MTBP peaks.}
+\item{mtbp_peaks_bed_path}{Path to BED file with MTBP peaks.}
 
-\item{snsseq_bed_path}{BED file path for SNS-seq origins.}
+\item{snsseq_bed_path}{Path to BED file for SNS-seq origins.}
 
-\item{snsseq_track_color}{Color for SNS-seq track. Default: "#C1666B"}
+\item{snsseq_track_color}{Color for SNS-seq annotation track. Default: "#C1666B"}
 
-\item{iniseq_bed_path}{BED file path for Ini-seq origins.}
+\item{iniseq_bed_path}{Path to BED file for Ini-seq origins.}
 
-\item{iniseq_track_color}{Color for Ini-seq track. Default: "#D4B483"}
+\item{iniseq_track_color}{Color for Ini-seq annotation track. Default: "#D4B483"}
 
-\item{repliseq_gr_rds_path}{RDS file path for Repli-seq GRanges object.}
+\item{repliseq_gr_rds_path}{Path to RDS file containing Repli-seq GRanges.}
 
-\item{ideogram_csv_path}{CSV path for ideogram data.}
+\item{ideogram_csv_path}{Path to CSV file with ideogram data (columns: chrom, chromStart, chromEnd, name, gieStain).}
 
-\item{highlight_regions_starts}{Start coordinates of highlight boxes.}
+\item{highlight_regions_starts}{Numeric vector of start coordinates for highlight regions.}
 
-\item{highlight_regions_widths}{Widths of highlight boxes.}
+\item{highlight_regions_widths}{Numeric vector of widths for highlight regions.}
 
-\item{track_sizes}{Named vector of track heights for plotting.}
+\item{figure_width}{Width of output figure in inches. Default: 16}
 
-\item{figure_width}{Width of the final figure (in inches). Default: 16}
+\item{figure_height}{Height of output figure in inches. Default: 16}
 
-\item{figure_height}{Height of the final figure (in inches). Default: 16}
+\item{genome_build}{Genome build identifier (e.g. "hg38"). Default: "hg38"}
 
-\item{genome_build}{Genome build identifier. Default: "hg38"}
+\item{tracks_to_plot_with_sizes}{Named numeric vector. Names must match track objects created inside the function. Values control their heights. Tracks appear in the specified order.}
 }
 \value{
-A grid graphics object of the full genome track plot.
+A grid graphics object representing the genome track plot.
 }
 \description{
-Generates a list of genome tracks including ideogram, Repli-seq, origin mapping data
-(SNS-seq, Ini-seq), peak annotations, and log2 fold change signal tracks for TRESLIN and MTBP.
+Generates a genome browser-style figure for a specified genomic region,
+visualizing log2 fold change signals from TRESLIN and MTBP ChIP-seq,
+peak annotations, and origin mapping (Repli-seq, SNS-seq, Ini-seq).
+Allows for customizable track inclusion and sizing via a named vector input.
 }
