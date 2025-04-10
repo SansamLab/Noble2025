@@ -2159,16 +2159,15 @@ createAsynchronousTracksWithRepliseq <- function(
     tracks_to_plot_with_sizes = c(
       "itrack" = 0.4,
       "axisTrack" = 0.8,
-      "MTBP_25k_Lg2FC_dTrack" = 1,
+      "MTBP_Lg2FC_dTrack" = 1,
       "MTBP_Unified_Peaks_Track" = 0.5,
-      "TRESLIN_25k_Lg2FC_dTrack" = 1,
+      "TRESLIN_Lg2FC_dTrack" = 1,
       "TRESLIN_Unified_Peaks_Track" = 0.5,
       "IniSeqTrack" = 0.5,
       "SnsSeq_Track" = 0.5,
       "dTrack_Repliseq" = 1
     )
 ){
-  tracks_to_plot <- as.list(names(tracks_to_plot_with_sizes))
   track_sizes <- as.numeric(tracks_to_plot_with_sizes)
 
   message("Parsing range: ", range_to_plot)
@@ -2232,7 +2231,7 @@ createAsynchronousTracksWithRepliseq <- function(
   )
 
   message("Creating TRESLIN signal track...")
-  TRESLIN_25k_Lg2FC_dTrack <- make2SampleLog2FcCoverageDataTrack(
+  TRESLIN_Lg2FC_dTrack <- make2SampleLog2FcCoverageDataTrack(
     chromosome = chromosome,
     start = start_pos,
     end = end_pos,
@@ -2248,7 +2247,7 @@ createAsynchronousTracksWithRepliseq <- function(
   )
 
   message("Creating MTBP signal track...")
-  MTBP_25k_Lg2FC_dTrack <- make2SampleLog2FcCoverageDataTrack(
+  MTBP_Lg2FC_dTrack <- make2SampleLog2FcCoverageDataTrack(
     chromosome = chromosome,
     start = start_pos,
     end = end_pos,
@@ -2262,6 +2261,18 @@ createAsynchronousTracksWithRepliseq <- function(
     HistogramColor = mtbp_color,
     yLimits = mtbp_log2fc_ylimits
   )
+
+  all_tracks_list <- list(
+    "itrack" = itrack, "axisTrack" = axisTrack,
+    "MTBP_Lg2FC_dTrack" = MTBP_Lg2FC_dTrack,
+    "MTBP_Unified_Peaks_Track" = MTBP_Unified_Peaks_Track,
+    "TRESLIN_Lg2FC_dTrack" = TRESLIN_Lg2FC_dTrack,
+    "TRESLIN_Unified_Peaks_Track" = TRESLIN_Unified_Peaks_Track,
+    "IniSeqTrack" = IniSeqTrack, "SnsSeq_Track" = SnsSeq_Track,
+    "dTrack_Repliseq" = dTrack_Repliseq
+  )
+
+  tracks_to_plot <- all_tracks_list[names(tracks_to_plot_with_sizes)]
 
   message("Creating highlight track and rendering figure...")
   ht <- HighlightTrack(
