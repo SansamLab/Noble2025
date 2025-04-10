@@ -2156,20 +2156,27 @@ createAsynchronousTracksWithRepliseq <- function(
     figure_height = 16,
     genome_build = "hg38"
 ) {
-  # Split genomic range
+  message("Parsing range: ", range_to_plot)
   range_to_plot_split <- strsplit(range_to_plot, ":|-") %>%
     unlist() %>%
     magrittr::set_names(c("chromosome", "start", "end"))
 
-  # Load ideogram
+  chromosome <- range_to_plot_split[["chromosome"]]
+  start_pos <- as.numeric(range_to_plot_split[["start"]])
+  end_pos <- as.numeric(range_to_plot_split[["end"]])
+
+  message("Chromosome: ", chromosome)
+  message("Start: ", start_pos)
+  message("End: ", end_pos)
+
+  message("Loading ideogram from: ", ideogram_csv_path)
   ideogram_df <- read.csv(ideogram_csv_path)
   names(ideogram_df) <- c("chrom", "chromStart", "chromEnd", "name", "gieStain")
   itrack <- IdeogramTrack(genome = genome_build, bands = ideogram_df, ucscChromosomeNames = FALSE, showId = FALSE)
 
-  # Genome axis
   axisTrack <- GenomeAxisTrack(fontsize = 8, distFromAxis = 9)
 
-  # Repli-seq heatmap
+  message("Loading Repli-seq from: ", repliseq_gr_rds_path)
   dTrack_Repliseq <- readRDS(repliseq_gr_rds_path) %>%
     DataTrack(
       name = "RepliSeq", type = "heatmap",
@@ -2177,39 +2184,43 @@ createAsynchronousTracksWithRepliseq <- function(
       ylim = c(5, 20), showTitle = FALSE, genome = genome_build
     )
 
-  # Origin tracks
+  message("Importing SNS-seq BED from: ", snsseq_bed_path)
   SnsSeq_Track <- AnnotationTrack(
-    range = importBED(snsseq_bed_path, chromosomesToImport = range_to_plot_split["chromosome"]),
+    range = importBED(snsseq_bed_path, chromosomesToImport = chromosome),
     name = "SNSSeq", col = snsseq_track_color,
     fill = snsseq_track_color, col.line = snsseq_track_color,
     showTitle = FALSE, genome = genome_build
   )
+
+  message("Importing Ini-seq BED from: ", iniseq_bed_path)
   IniSeqTrack <- AnnotationTrack(
-    range = importBED(iniseq_bed_path, chromosomesToImport = range_to_plot_split["chromosome"]),
+    range = importBED(iniseq_bed_path, chromosomesToImport = chromosome),
     name = "IniSeq", col = iniseq_track_color,
     fill = iniseq_track_color, col.line = iniseq_track_color,
     showTitle = FALSE, genome = genome_build
   )
 
-  # Peak tracks
+  message("Importing MTBP peaks from: ", mtbp_peaks_bed_path)
   MTBP_Unified_Peaks_Track <- AnnotationTrack(
-    range = importBED(mtbp_peaks_bed_path, chromosomesToImport = range_to_plot_split["chromosome"]),
+    range = importBED(mtbp_peaks_bed_path, chromosomesToImport = chromosome),
     name = "MTBP peaks", col = mtbp_color,
     fill = mtbp_color, col.line = mtbp_color,
     showTitle = FALSE, genome = genome_build
   )
+
+  message("Importing TRESLIN peaks from: ", treslin_peaks_bed_path)
   TRESLIN_Unified_Peaks_Track <- AnnotationTrack(
-    range = importBED(treslin_peaks_bed_path, range_to_plot_split["chromosome"]),
+    range = importBED(treslin_peaks_bed_path, chromosomesToImport = chromosome),
     name = "TRESLIN peaks", col = treslin_color,
     fill = treslin_color, col.line = treslin_color,
     showTitle = FALSE, genome = genome_build
   )
 
-  # Coverage signal tracks
+  message("Creating TRESLIN signal track...")
   TRESLIN_25k_Lg2FC_dTrack <- make2SampleLog2FcCoverageDataTrack(
-    chromosome = range_to_plot_split["chromosome"],
-    start = range_to_plot_split["start"],
-    end = range_to_plot_split["end"],
+    chromosome = chromosome,
+    start = start_pos,
+    end = end_pos,
     windowSize = treslin_log2fc_window_size,
     stepSize = treslin_log2fc_step_size,
     txBamFile1 = treslin_tx_bam_1_path,
@@ -2221,10 +2232,11 @@ createAsynchronousTracksWithRepliseq <- function(
     yLimits = treslin_log2fc_ylimits
   )
 
+  message("Creating MTBP signal track...")
   MTBP_25k_Lg2FC_dTrack <- make2SampleLog2FcCoverageDataTrack(
-    chromosome = range_to_plot_split["chromosome"],
-    start = range_to_plot_split["start"],
-    end = range_to_plot_split["end"],
+    chromosome = chromosome,
+    start = start_pos,
+    end = end_pos,
     windowSize = mtbp_log2fc_window_size,
     stepSize = mtbp_log2fc_step_size,
     txBamFile1 = mtbp_tx_bam_1_path,
@@ -2236,7 +2248,7 @@ createAsynchronousTracksWithRepliseq <- function(
     yLimits = mtbp_log2fc_ylimits
   )
 
-  # All tracks
+  message("Compiling tracks...")
   tracksToPlot <- list(
     itrack, axisTrack,
     MTBP_25k_Lg2FC_dTrack, MTBP_Unified_Peaks_Track,
@@ -2244,26 +2256,26 @@ createAsynchronousTracksWithRepliseq <- function(
     IniSeqTrack, SnsSeq_Track, dTrack_Repliseq
   )
 
-  # Highlighting
+  message("Creating highlight track and rendering figure...")
   ht <- HighlightTrack(
     trackList = tracksToPlot,
     start = highlight_regions_starts,
     width = highlight_regions_widths,
-    chromosome = range_to_plot_split["chromosome"],
+    chromosome = chromosome,
     fill = rep("transparent", length(highlight_regions_starts)),
     col = c("#ED6A5A"),
     inBackground = FALSE, lwd = 2
   )
 
-  # Final figure
   track_plot <- plotTracks(
     ht,
-    chromosome = range_to_plot_split["chromosome"],
-    from = as.integer(range_to_plot_split["start"]),
-    to = as.integer(range_to_plot_split["end"]),
+    chromosome = chromosome,
+    from = start_pos,
+    to = end_pos,
     sizes = track_sizes,
     showTitle = FALSE
   ) %>% grid.grabExpr(width = figure_width, height = figure_height)
 
+  message("Track plot complete.")
   return(track_plot)
 }
