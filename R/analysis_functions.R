@@ -1986,7 +1986,7 @@ plotLog2fcHeatmap <- function(
 #' input BAM files. It calculates Log2FC values for specified genomic regions
 #' and creates a DataTrack for visualization.
 #'
-#' @param chomosome The chromosome for the genomic region of interest.
+#' @param chromosome The chromosome for the genomic region of interest.
 #' @param start The start position of the genomic region.
 #' @param end The end position of the genomic region.
 #' @param windowSize The size of the sliding windows for Log2FC calculation.
@@ -2006,7 +2006,7 @@ plotLog2fcHeatmap <- function(
 #' @examples
 #' \dontrun{
 #' # Example usage:
-#' dt <- make2SampleLog2FcCoverageDataTrack(chomosome="chr3", start=5000000, end=55000000,
+#' dt <- make2SampleLog2FcCoverageDataTrack(chromosome="chr3", start=5000000, end=55000000,
 #'                                          windowSize=25000, stepSize=5000,
 #'                                          txBamFile1="path/to/txBamFile1.bam",
 #'                                          inBamFile1="path/to/inBamFile1.bam",
@@ -2028,7 +2028,7 @@ make2SampleLog2FcCoverageDataTrack <- function(chromosome="chr3",
                                                HistogramColor="#1b9e77",
                                                yLimits=c(-0.5,0.5)
 ){
-  gr <- GRanges(seqnames=chomosome,ranges = IRanges(start=start,end=end))
+  gr <- GRanges(seqnames=chromosome,ranges = IRanges(start=start,end=end))
   windws <- slidingWindows(gr,windowSize,step=stepSize) %>% .[[1]]
   makeCPMS <- function(BamFile=txBamFile1) {
     counts <- bamProfile(BamFile, gr, paired.end = "midpoint", mapqual = 15, binsize = stepSize)

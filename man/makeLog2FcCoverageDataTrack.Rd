@@ -5,7 +5,7 @@
 \title{Create a DataTrack for Log2 Fold Change (Log2FC) Coverage Data}
 \usage{
 makeLog2FcCoverageDataTrack(
-  chomosome = "chr3",
+  chromosome = "chr3",
   start = 5e+06,
   end = 5.5e+07,
   windowSize = 25000,
@@ -19,7 +19,7 @@ makeLog2FcCoverageDataTrack(
 )
 }
 \arguments{
-\item{chomosome}{The chromosome for the genomic region of interest.}
+\item{chromosome}{The chromosome for the genomic region of interest.}
 
 \item{start}{The start position of the genomic region.}
 
@@ -48,7 +48,7 @@ and creates a DataTrack for visualization.
 \examples{
 \dontrun{
 # Example usage:
-dt <- makeLog2FcCoverageDataTrack(chomosome="chr3", start=5000000, end=55000000,
+dt <- makeLog2FcCoverageDataTrack(chromosome="chr3", start=5000000, end=55000000,
                                   windowSize=25000, stepSize=5000,
                                   txBamFile="path/to/txBamFile.bam",
                                   inBamFile="path/to/inBamFile.bam",

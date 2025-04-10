@@ -24,6 +24,8 @@ make2SampleLog2FcCoverageDataTrack(
 )
 }
 \arguments{
+\item{chromosome}{The chromosome for the genomic region of interest.}
+
 \item{start}{The start position of the genomic region.}
 
 \item{end}{The end position of the genomic region.}
@@ -43,8 +45,6 @@ make2SampleLog2FcCoverageDataTrack(
 \item{trackName}{The name for the DataTrack.}
 
 \item{HistogramColor}{The color for the histogram in the DataTrack.}
-
-\item{chomosome}{The chromosome for the genomic region of interest.}
 }
 \value{
 A DataTrack object for 2-sample Log2FC coverage data.
@@ -57,7 +57,7 @@ and creates a DataTrack for visualization.
 \examples{
 \dontrun{
 # Example usage:
-dt <- make2SampleLog2FcCoverageDataTrack(chomosome="chr3", start=5000000, end=55000000,
+dt <- make2SampleLog2FcCoverageDataTrack(chromosome="chr3", start=5000000, end=55000000,
                                          windowSize=25000, stepSize=5000,
                                          txBamFile1="path/to/txBamFile1.bam",
                                          inBamFile1="path/to/inBamFile1.bam",
