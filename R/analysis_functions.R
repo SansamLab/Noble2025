@@ -1762,10 +1762,27 @@ makeLibraryNormalizedMatrix <- function(
 #' @export
 importBED <- function(bedPath, chromosomesToImport = chromosomes) {
   chromosomesToImport <- as.character(chromosomesToImport)
-  read.table(bedPath) %>%
-    set_names(c("seqnames", "start", "end")) %>%
-    GenomicRanges::makeGRangesFromDataFrame() %>%
-    { GenomeInfoDb::`seqlevels`(., pruning.mode = "coarse") <- chromosomesToImport; . }
+
+  # Read first line to detect if it contains a header
+  first_row <- read.table(bedPath, nrows = 1, stringsAsFactors = FALSE)
+
+  # Detect if columns 2 and 3 (start, end) are numeric
+  second_col_is_numeric <- suppressWarnings(!is.na(as.numeric(first_row[[2]])))
+  third_col_is_numeric <- suppressWarnings(!is.na(as.numeric(first_row[[3]])))
+
+  has_header <- !(second_col_is_numeric && third_col_is_numeric)
+
+  # Read full table with or without header
+  bed_df <- read.table(bedPath, header = has_header, stringsAsFactors = FALSE)
+
+  # Standardize required column names
+  colnames(bed_df)[1:3] <- c("seqnames", "start", "end")
+
+  # Convert to GRanges and restrict to specified chromosomes
+  gr <- GenomicRanges::makeGRangesFromDataFrame(bed_df, keep.extra.columns = TRUE)
+  GenomeInfoDb::`seqlevels<-`(gr, pruning.mode = "coarse") <- chromosomesToImport
+
+  return(gr)
 }
 
 #' Generate a Two-Sample Euler Plot from GRanges Objects
