@@ -1756,9 +1756,8 @@ makeLibraryNormalizedMatrix <- function(
 #' @examples
 #' importBED("path/to/peaks.bed", chromosomesToImport = paste0("chr", 1:22))
 #'
-#' @importFrom GenomicRanges makeGRangesFromDataFrame
-#' @importFrom GenomeInfoDb `seqlevels<-`
-#' @importFrom GenomeInfoDb seqlevels
+#' @import GenomicRanges
+#' @import GenomeInfoDb
 #' @export
 importBED <- function(bedPath, chromosomesToImport = chromosomes) {
   chromosomesToImport <- as.character(chromosomesToImport)
@@ -1780,7 +1779,7 @@ importBED <- function(bedPath, chromosomesToImport = chromosomes) {
 
   # Convert to GRanges and restrict to specified chromosomes
   gr <- GenomicRanges::makeGRangesFromDataFrame(bed_df, keep.extra.columns = TRUE)
-  GenomeInfoDb::`seqlevels<-`(gr, pruning.mode = "coarse") <- chromosomesToImport
+  seqlevels(gr, pruning.mode = "coarse") <- chromosomesToImport
 
   return(gr)
 }
