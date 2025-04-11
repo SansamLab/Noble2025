@@ -22,13 +22,19 @@ summarize_log2fc_by_rt_fraction <- function(log2fc_gr, repliseq_gr) {
   repliseq_clean <- repliseq_gr[complete.cases(mcols(repliseq_gr))] %>%
     sortSeqlevels() %>% sort()
 
-  repliseq_clean$Max <- apply(mcols(repliseq_clean), 1, which.max) %>% paste0("S", .)
+  log2fc_gr <- sortSeqlevels(log2fc_gr) %>% sort()
 
-  log2fc_gr_filtered <- log2fc_gr[!is.na(match(log2fc_gr, repliseq_clean))] %>%
-    sortSeqlevels() %>% sort()
+  overlap_hits <- findOverlaps(log2fc_gr, repliseq_clean)
+
+  matched_log2fc <- log2fc_gr[queryHits(overlap_hits)]
+  matched_repliseq <- repliseq_clean[subjectHits(overlap_hits)]
+
+  matched_repliseq$S.fraction <- apply(mcols(matched_repliseq), 1, which.max) %>%
+    paste0("S", .)
 
   data.frame(
-    "S.fraction" = factor(repliseq_clean$Max, levels = paste0("S", 1:16)),
-    "Log2FC" = log2fc_gr_filtered$Log2FC
+    "S.fraction" = factor(matched_repliseq$S.fraction, levels = paste0("S", 1:16)),
+    "Log2FC" = matched_log2fc$Log2FC
   )
 }
+
