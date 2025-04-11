@@ -1,4 +1,3 @@
-
 #' Import a BED file as a GenomicRanges object
 #'
 #' This function reads a BED file and converts it to a \code{GRanges} object,
@@ -15,7 +14,7 @@
 #' @import GenomicRanges
 #' @import GenomeInfoDb
 #' @export
-importBED <- function(bedPath, chromosomesToImport = chromosomes) {
+importBED <- function(bedPath, chromosomesToImport = paste0("chr",1:22)) {
   chromToImport <- as.character(chromosomesToImport)
 
   # Read first line to detect if it contains a header

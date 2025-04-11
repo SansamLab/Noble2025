@@ -4,7 +4,7 @@
 \alias{importBED}
 \title{Import a BED file as a GenomicRanges object}
 \usage{
-importBED(bedPath, chromosomesToImport = chromosomes)
+importBED(bedPath, chromosomesToImport = paste0("chr", 1:22))
 }
 \arguments{
 \item{bedPath}{Character string. Path to the BED file.}
