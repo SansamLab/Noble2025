@@ -2413,19 +2413,14 @@ calculateLog2FcOverGRanges <- function(
 
   # Average CPM across replicates
   makeAllCpms <- function(bam_list) {
-    if (length(bam_list) == 1) {
-      return(makeCPMS(bam_list[[1]]))  # <- fix here: pass the single BAM, not the list
-    } else {
-      cpm_gr_list <- lapply(bam_list, makeCPMS)
-      mean_cpms <- lapply(cpm_gr_list, function(gr) matrix(gr$cpms, ncol = 1)) %>%
-        do.call(cbind, .) %>%
-        rowMeans()
+    cpm_gr_list <- lapply(bam_list, makeCPMS)
+    mean_cpms <- lapply(cpm_gr_list, function(gr) matrix(gr$cpms, ncol = 1)) %>%
+      do.call(cbind, .) %>%
+      rowMeans()
 
-      cpm_gr_list[[1]]$cpms <- mean_cpms
-      return(cpm_gr_list[[1]])
-    }
+    cpm_gr_list[[1]]$cpms <- mean_cpms
+    return(cpm_gr_list[[1]])
   }
-
 
   tx_cpms_gr <- makeAllCpms(tx_bam_files)
   in_cpms_gr <- makeAllCpms(in_bam_files)
