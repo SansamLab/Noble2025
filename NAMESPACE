@@ -3,6 +3,7 @@
 export(GetReproduciblePeaks)
 export(calculateLog2FcOverGRanges)
 export(calculate_peak_density_by_fraction)
+export(combine_peak_annotation_sets)
 export(convert_vector_to_dataframe_for_plot)
 export(count_peaks_in_bins)
 export(createAndWriteUnifiedPeakSet)
