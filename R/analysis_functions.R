@@ -2543,6 +2543,7 @@ calculate_peak_density_by_fraction <- function(repliseq_gr, peak_gr) {
 #'
 #' @import ggplot2
 #' @export
+#'
 plot_peak_density_by_fraction <- function(df, title = NULL) {
   ggplot(df, aes(x = S.fraction.numeric, y = peakDensity)) +
     geom_line() +
