@@ -2559,3 +2559,72 @@ plot_peak_density_by_fraction <- function(df, title = NULL) {
     ylab("Peaks per 50 kb") +
     ggtitle(title)
 }
+
+#' Annotate and label a set of genomic peaks
+#'
+#' Uses ChIPseeker::annotatePeak to annotate peaks and adds a column
+#' indicating the peak set.
+#'
+#' @param peaks A GRanges object representing peaks to annotate.
+#' @param set_name Character string labeling the source of the peaks.
+#' @param txdb A TxDb object (e.g. from GenomicFeatures::makeTxDbFromGFF).
+#' @param tss_region A numeric vector of length 2 specifying the TSS region.
+#' Default: c(-3000, 3000)
+#'
+#' @return A data.frame of annotation statistics with a new column "Set"
+#' @import ChIPseeker
+#' @import dplyr
+annotate_and_label_peaks <- function(peaks, set_name, txdb, tss_region = c(-3000, 3000)) {
+  ChIPseeker::annotatePeak(peaks, tssRegion = tss_region, TxDb = txdb, annoDb = "org.Hs.eg.db")@annoStat %>%
+    dplyr::mutate(Set = set_name)
+}
+
+
+#' Combine multiple labeled peak annotation sets into a single data.frame
+#'
+#' Calls `annotate_and_label_peaks()` for each set and binds the results
+#' into a single tidy data frame.
+#'
+#' @param peak_sets Named list of GRanges objects representing different peak sets.
+#' @param txdb A TxDb object for gene annotation.
+#' @param tss_region A numeric vector of length 2 for TSS region. Default: c(-3000, 3000)
+#'
+#' @return A data.frame containing annotation summaries for all peak sets.
+#' @import dplyr
+combine_peak_annotation_sets <- function(peak_sets, txdb, tss_region = c(-3000, 3000)) {
+  annotation_dfs <- lapply(names(peak_sets), function(set_name) {
+    annotate_and_label_peaks(
+      peaks = peak_sets[[set_name]],
+      set_name = set_name,
+      txdb = txdb,
+      tss_region = tss_region
+    )
+  })
+
+  dplyr::bind_rows(annotation_dfs)
+}
+
+#' Plot Proportion of Genomic Features by Peak Set
+#'
+#' @param annotation_df Combined annotation data frame.
+#' @param fill_colors Named vector of fill colors for genomic features.
+#'
+#' @return A ggplot object showing stacked bar chart of annotation percentages.
+#' @import ggplot2
+#' @export
+plot_peak_annotation_proportions <- function(annotation_df, fill_colors) {
+  ggplot(annotation_df, aes(fill = Feature, y = Frequency, x = Set)) +
+    geom_bar(position = "fill", stat = "identity") +
+    scale_fill_manual(values = fill_colors) +
+    theme_bw(base_size = 8) +
+    theme(
+      axis.title.y = element_blank(),
+      legend.title = element_blank(),
+      axis.text.x = element_text(size = 6),
+      axis.text.y = element_text(size = 8),
+      legend.key.size = unit(2, 'mm'),
+      panel.background = element_rect(fill = 'transparent'),
+      plot.background = element_rect(fill = 'transparent', color = NA)
+    ) +
+    coord_flip()
+}
