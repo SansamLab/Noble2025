@@ -2,10 +2,24 @@
 % Please edit documentation in R/sansam_ggplot_themes.R
 \name{sansam_theme}
 \alias{sansam_theme}
-\title{custom ggplot theme for Sansam plots}
+\title{Sansam Lab Default ggplot2 Theme}
 \usage{
 sansam_theme()
 }
+\value{
+A `ggplot2::theme` object with customized appearance:
+- Transparent background
+- Small font sizes (6–8 pt)
+- No outer margins
+}
 \description{
-custom ggplot theme for Sansam plots
+A minimalist `ggplot2` theme with small font sizes and transparent backgrounds,
+designed for compact scientific figures.
+}
+\examples{
+library(ggplot2)
+ggplot(mtcars, aes(mpg, wt)) +
+  geom_point() +
+  sansam_theme()
+
 }
