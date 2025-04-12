@@ -18,6 +18,7 @@
 #' @import gridGraphics
 #' @import cowplot
 #' @import magrittr
+#' @importFrom SummarizedExperiment assays
 make_enriched_heatmap_grid <- function(
   matrix_file_path,
   matrix_order,
