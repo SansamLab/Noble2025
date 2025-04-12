@@ -33,20 +33,35 @@ calculateLog2FcOverGRanges <- function(
   # Split GRanges by chromosome to reduce memory usage
   gr_lst <- split(gr, seqnames(gr))
 
-  # Count and normalize to CPM
   makeCPMS <- function(bam_file, gr_split = gr_lst) {
     counts_gr <- parallel::mclapply(gr_split, function(g) {
-      g$counts <- bamsignals::bamCount(bam_file, g, paired.end = "midpoint", mapqual = mapq)
-      return(g)
-    }, mc.cores = n_cores) %>% GenomicRanges::GRangesList() %>% unlist()
+      tryCatch({
+        g$counts <- bamsignals::bamCount(bam_file, g, paired.end = "midpoint", mapqual = mapq)
+        return(g)
+      }, error = function(e) {
+        message(sprintf("bamCount failed on chromosome: %s for BAM file: %s", unique(as.character(seqnames(g))), bam_file))
+        message("Error message: ", e$message)
+        return(NULL)  # Skip this chromosome if bamCount fails
+      })
+    }, mc.cores = n_cores)
+
+    # Filter out NULL results
+    counts_gr <- counts_gr[!vapply(counts_gr, is.null, logical(1))]
+
+    if (length(counts_gr) == 0) {
+      stop("bamCount failed for all chromosomes in ", bam_file)
+    }
+
+    counts_gr <- GenomicRanges::GRangesList(counts_gr) %>% unlist()
 
     total_reads <- Rsamtools::idxstatsBam(bam_file) %>%
-      { .[.$seqnames %in% chromosomes_to_include, ] } %>%
-      { sum(as.numeric(.[, 3])) }
+      subset(seqnames %in% chromosomes_to_include) %>%
+      with(sum(as.numeric(mapped)))
 
     counts_gr$cpms <- counts_gr$counts / total_reads * 1e6
     return(counts_gr)
   }
+
 
   # Average CPM across replicates
   makeAllCpms <- function(bam_list) {
