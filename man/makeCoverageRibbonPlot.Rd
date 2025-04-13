@@ -8,6 +8,7 @@ makeCoverageRibbonPlot(
   matrix_file,
   group_filter_pattern,
   group_colors,
+  group_line_type,
   plot_title = "Coverage Plot",
   group_labels = NULL,
   group_title_extraction_fun = function(x) gsub("_rep.*", "", x),
@@ -22,11 +23,13 @@ makeCoverageRibbonPlot(
 
 \item{group_colors}{Named character vector of colors for the fill aesthetic, with names matching groups.}
 
+\item{group_line_type}{Named character vector of line types for the fill aesthetic, with names matching groups.}
+
 \item{plot_title}{Character string. Title to display on the plot.}
 
 \item{group_labels}{Optional named character vector. Names are group IDs and values are display labels.}
 
-\item{group_title_extraction_fun}{Function applied to each sample name to extract the group label. 
+\item{group_title_extraction_fun}{Function applied to each sample name to extract the group label.
 Default: \code{function(x) gsub("_rep.*", "", x)}.}
 
 \item{x_axis_breaks}{Numeric vector for x-axis tick positions. Default: \code{c(0, 300, 600)}.}

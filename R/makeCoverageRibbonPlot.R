@@ -7,9 +7,10 @@
 #' @param matrix_file Character string. Path to the input deepTools matrix file (gzipped).
 #' @param group_filter_pattern Character string. Regex pattern to filter groups (e.g., "TICRR").
 #' @param group_colors Named character vector of colors for the fill aesthetic, with names matching groups.
+#' @param group_line_type Named character vector of line types for the fill aesthetic, with names matching groups.
 #' @param plot_title Character string. Title to display on the plot.
 #' @param group_labels Optional named character vector. Names are group IDs and values are display labels.
-#' @param group_title_extraction_fun Function applied to each sample name to extract the group label. 
+#' @param group_title_extraction_fun Function applied to each sample name to extract the group label.
 #'   Default: \code{function(x) gsub("_rep.*", "", x)}.
 #' @param x_axis_breaks Numeric vector for x-axis tick positions. Default: \code{c(0, 300, 600)}.
 #' @param x_axis_labels Character vector for x-axis labels. Default: \code{c("-3kb", "summit", "+3kb")}.
@@ -23,6 +24,7 @@
 makeCoverageRibbonPlot <- function(matrix_file,
                                    group_filter_pattern,
                                    group_colors,
+                                   group_line_type,
                                    plot_title = "Coverage Plot",
                                    group_labels = NULL,
                                    group_title_extraction_fun = function(x) gsub("_rep.*", "", x),
@@ -87,7 +89,7 @@ makeCoverageRibbonPlot <- function(matrix_file,
     scale_linetype_manual(
       name = NULL,
       labels = group_labels,
-      values = setNames(c(1, 2), names(group_colors))
+      values = group_line_type
     ) +
     ggtitle(plot_title) +
     ylab("Log2(Signal/Background)")
