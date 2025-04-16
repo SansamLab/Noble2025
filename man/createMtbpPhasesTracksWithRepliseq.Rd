@@ -35,13 +35,13 @@ Must be named with: "G1", "EarlyS", "LateS", "G2".}
 
 \item{ideogram_csv_path}{Path to CSV file with ideogram data.}
 
-\item{phase_colors}{Named vector of colors for each phase. Default uses four predefined hex codes.}
+\item{phase_colors}{Named vector of colors for each phase.}
 
 \item{track_sizes}{Named numeric vector indicating relative heights of each track.}
 
-\item{figure_width}{Width of output figure in inches. Default: 16}
+\item{figure_width}{Width of output figure in inches. Default: 16.}
 
-\item{figure_height}{Height of output figure in inches. Default: 16}
+\item{figure_height}{Height of output figure in inches. Default: 16.}
 }
 \value{
 A grid graphics object representing the genome track plot.
