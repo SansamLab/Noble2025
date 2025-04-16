@@ -68,7 +68,7 @@ make1SampleLog2FcCoverageDataTrack <- function(chromosome="chr3",
 
   output_gr <- TX_CPMS
   mcols(output_gr) <- NULL
-  mcols(output_gr) <- log2(TX_CPMS/(IN_CPMS+0.0000000001))
+  mcols(output_gr) <- log2(TX_CPMS$cpms/(IN_CPMS$cpms+0.0000000001))
   if(!is.na(yLimits)){
     dt <- DataTrack(
       range = output_gr, genome = "hg38", type = "hist",name = trackName,
