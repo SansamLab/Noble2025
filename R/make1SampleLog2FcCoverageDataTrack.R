@@ -66,7 +66,7 @@ make1SampleLog2FcCoverageDataTrack <- function(chromosome="chr3",
   TX_CPMS <- makeCPMS()
   IN_CPMS <- makeCPMS(inBamFile)
 
-  output_gr <- TX_CPMS1
+  output_gr <- TX_CPMS
   mcols(output_gr) <- NULL
   mcols(output_gr) <- log2(TX_CPMS/(IN_CPMS+0.0000000001))
   if(!is.na(yLimits)){
