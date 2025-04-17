@@ -115,7 +115,7 @@ createMtbpPhasesTracksWithRepliseq <- function(
   )
   plotTracks(ht,
     chromosome = chromosome, from = start_pos,
-    to = end_pos, sizes = as.numeric(track_sizes[names(all_tracks)]),
+    to = end_pos, sizes = as.numeric(track_sizes),
     showTitle = FALSE
   ) %>% grid.grabExpr(
     width = figure_width,
