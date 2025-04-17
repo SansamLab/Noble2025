@@ -2,52 +2,67 @@
 % Please edit documentation in R/createFucciTracksWithRepliseq.R
 \name{createMtbpPhasesTracksWithRepliseq}
 \alias{createMtbpPhasesTracksWithRepliseq}
-\title{Create Genome Track Plot for MTBP Binding Across Cell Cycle Phases}
+\title{Create Genome Track Plot for MTBP Binding Across Cell Cycle Phases with Repli-seq and Peak Density}
 \usage{
 createMtbpPhasesTracksWithRepliseq(
   range_to_plot = "chr1:65748366-67420714",
   highlight_regions_starts = c(65748366, 90349536, 100202878),
   highlight_regions_widths = c(1672350, 8656743, 1369815),
+  highlight_regions_colors = c("blue", "orange", "purple"),
   mtbp_paths,
+  lg2fc_ylimits = c(-2, 1.5),
   repliseq_gr_rds_path,
   ideogram_csv_path,
+  blacklist_bed_path,
+  peak_heatplot_bin_size = 50000,
   phase_colors = c(G1 = "#114b5F", EarlyS = "#1a936f", LateS = "#88d498", G2 = "#cc2936"),
   track_sizes = c(itrack = 0.4, axisTrack = 0.8, MTBP_G1_log2fc_dtrack = 1,
     MTBP_G1_peaks_track = 0.5, MTBP_EarlyS_log2fc_dtrack = 1, MTBP_EarlyS_peaks_track =
     0.5, MTBP_LateS_log2fc_dtrack = 1, MTBP_LateS_peaks_track = 0.5,
     MTBP_G2_log2fc_dtrack = 1, MTBP_G2_peaks_track = 0.5, dTrack_Repliseq = 1),
   figure_width = 16,
-  figure_height = 16
+  figure_height = 16,
+  axis_track_scale = 1e+07
 )
 }
 \arguments{
-\item{range_to_plot}{UCSC-style genomic region to visualize (e.g. "chr1:65748366-67420714").}
+\item{range_to_plot}{Genomic region to visualize in UCSC-style format (e.g. "chr1:65748366-67420714").}
 
-\item{highlight_regions_starts}{Numeric vector of start coordinates for highlight regions.}
+\item{highlight_regions_starts}{Numeric vector of start positions for highlighted regions.}
 
-\item{highlight_regions_widths}{Numeric vector of widths for highlight regions.}
+\item{highlight_regions_widths}{Numeric vector of widths for each highlight region.}
 
-\item{mtbp_paths}{Named list of BAM and peak BED file paths for MTBP ChIP in each phase.
-Each element should be a list with elements `tx`, `input`, `peaks`.
-Must be named with: "G1", "EarlyS", "LateS", "G2".}
+\item{highlight_regions_colors}{Character vector of colors for highlight region outlines.}
 
-\item{repliseq_gr_rds_path}{Path to RDS file containing Repli-seq GRanges.}
+\item{mtbp_paths}{A named list with one entry for each phase ("G1", "EarlyS", "LateS", "G2").
+Each entry must be a list with keys: `tx` (treatment BAM), `input` (control BAM), and `peaks` (BED file).}
 
-\item{ideogram_csv_path}{Path to CSV file with ideogram data.}
+\item{lg2fc_ylimits}{Numeric vector of two values defining Y-axis limits for log2 fold change tracks.}
+
+\item{repliseq_gr_rds_path}{Path to an RDS file containing a GRanges object for Repli-seq signal.}
+
+\item{ideogram_csv_path}{Path to a CSV file defining ideogram bands (columns: chrom, chromStart, chromEnd, name, gieStain).}
+
+\item{blacklist_bed_path}{Path to BED file of genomic blacklist regions to exclude from log2FC calculation.}
+
+\item{peak_heatplot_bin_size}{Bin size (in bp) to use when converting peak annotations to histogram-style density plots.}
 
 \item{phase_colors}{Named vector of colors for each phase.}
 
-\item{track_sizes}{Named numeric vector indicating relative heights of each track.}
+\item{track_sizes}{Named numeric vector specifying the relative heights of tracks in the plot.}
 
-\item{figure_width}{Width of output figure in inches. Default: 16.}
+\item{figure_width}{Width of output figure in inches.}
 
-\item{figure_height}{Height of output figure in inches. Default: 16.}
+\item{figure_height}{Height of output figure in inches.}
+
+\item{axis_track_scale}{The distance in base pairs between tick marks on the genome axis.}
 }
 \value{
-A grid graphics object representing the genome track plot.
+A captured grid graphics object (using `grid.grabExpr`) representing the final genome track plot.
 }
 \description{
-Generates a genome browser-style figure for a specified genomic region,
-visualizing MTBP log2 fold change signals and peak calls from G1, Early S,
-Late S, and G2 sorted samples. Repli-seq data is included for comparison.
+This function generates a genome browser-style figure for a specified genomic region,
+visualizing MTBP log2 fold change signals and peak densities from G1, Early S,
+Late S, and G2 sorted samples. Repli-seq signal and ideogram tracks are included,
+along with shaded highlight regions and optional filtering of blacklisted genomic regions.
 }
