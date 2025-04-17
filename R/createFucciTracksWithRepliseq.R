@@ -49,11 +49,15 @@ createMtbpPhasesTracksWithRepliseq <- function(
   start_pos <- as.numeric(range_split[2])
   end_pos <- as.numeric(range_split[3])
 
+  ideogram_df <- read.csv(ideogram_csv_path, col.names = c("chrom", "chromStart", "chromEnd", "name", "gieStain"))
+
   itrack <- IdeogramTrack(
     genome = "hg38",
-    bands = read.csv(ideogram_csv_path, col.names = c("chrom", "chromStart", "chromEnd", "name", "gieStain")),
+    bands = ideogram_df,
     ucscChromosomeNames = FALSE, showId = FALSE
   )
+
+  itrack <- IdeogramTrack(genome = genome_build, bands = ideogram_df, ucscChromosomeNames = FALSE, showId = FALSE)
 
   axisTrack <- GenomeAxisTrack(fontsize = 8, distFromAxis = 9)
 

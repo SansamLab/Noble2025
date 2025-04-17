@@ -14,6 +14,7 @@
 #' @param inBamFile The path to the first control BAM file.
 #' @param trackName The name for the DataTrack.
 #' @param HistogramColor The color for the histogram in the DataTrack.
+#' @param blacklist_bed path to blacklist bed file
 #'
 #' @return A DataTrack object for 2-sample Log2FC coverage data.
 #'
@@ -41,9 +42,12 @@ make1SampleLog2FcCoverageDataTrack <- function(chromosome="chr3",
                                                inBamFile="../01_Asynchronous_HCT116/results/mergedDownSampledBams/WT_HCT116_anti-GFP_250.bam",
                                                trackName="Log2FC",
                                                HistogramColor="#1b9e77",
-                                               yLimits=c(-0.5,0.5)
+                                               yLimits=c(-0.5,0.5),
+                                               blacklist_bed
 ){
-  gr <- GRanges(seqnames=chromosome,ranges = IRanges(start=start,end=end))
+  blacklist_gr <- readBed(blacklist_bed)
+  gr <- GRanges(seqnames=chromosome,ranges = IRanges(start=start,end=end)) %>%
+    setdiff(., blacklist_gr)
   windws <- slidingWindows(gr,windowSize,step=stepSize) %>% .[[1]]
   makeCPMS <- function(BamFile=txBamFile) {
     counts <- bamProfile(BamFile, gr, paired.end = "midpoint", mapqual = 15, binsize = stepSize)

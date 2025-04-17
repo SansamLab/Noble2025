@@ -16,7 +16,8 @@ make1SampleLog2FcCoverageDataTrack(
     "../01_Asynchronous_HCT116/results/mergedDownSampledBams/WT_HCT116_anti-GFP_250.bam",
   trackName = "Log2FC",
   HistogramColor = "#1b9e77",
-  yLimits = c(-0.5, 0.5)
+  yLimits = c(-0.5, 0.5),
+  blacklist_bed
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ make1SampleLog2FcCoverageDataTrack(
 \item{trackName}{The name for the DataTrack.}
 
 \item{HistogramColor}{The color for the histogram in the DataTrack.}
+
+\item{blacklist_bed}{path to blacklist bed file}
 }
 \value{
 A DataTrack object for 2-sample Log2FC coverage data.
