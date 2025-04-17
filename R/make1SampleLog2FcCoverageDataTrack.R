@@ -46,8 +46,7 @@ make1SampleLog2FcCoverageDataTrack <- function(chromosome="chr3",
                                                blacklist_bed
 ){
   blacklist_gr <- readBed(blacklist_bed)
-  gr <- GRanges(seqnames=chromosome,ranges = IRanges(start=start,end=end)) %>%
-    setdiff(., blacklist_gr)
+  gr <- GRanges(seqnames=chromosome,ranges = IRanges(start=start,end=end))
   windws <- slidingWindows(gr,windowSize,step=stepSize) %>% .[[1]]
   makeCPMS <- function(BamFile=txBamFile) {
     counts <- bamProfile(BamFile, gr, paired.end = "midpoint", mapqual = 15, binsize = stepSize)
@@ -73,6 +72,7 @@ make1SampleLog2FcCoverageDataTrack <- function(chromosome="chr3",
   output_gr <- TX_CPMS
   mcols(output_gr) <- NULL
   mcols(output_gr) <- log2(TX_CPMS$cpms/(IN_CPMS$cpms+0.0000000001))
+  output_gr <- output_gr[!output_gr %over% blacklist_gr]
   if(!is.na(yLimits)){
     dt <- DataTrack(
       range = output_gr, genome = "hg38", type = "hist",name = trackName,
