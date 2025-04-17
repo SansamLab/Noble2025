@@ -53,6 +53,14 @@ createMtbpPhasesTracksWithRepliseq <- function(
     ), figure_width = 16, figure_height = 16,
     axis_track_scale = 10000000) {
   setCustomGvizScheme()
+  scheme <- Gviz::getScheme()
+  scheme$GdObject$fontsize <- 6
+  scheme$DataTrack$fontsize.legend <- 6
+  scheme$IdeogramTrack$fontsize <- 6
+  scheme$AnnotationTrack$fontsize.group <- 6
+  scheme$GdObject$background.title <- "transparent"
+  Gviz::addScheme(scheme, "myScheme")
+  options(Gviz.scheme = "myScheme")
   range_split <- strsplit(range_to_plot, ":|-")[[1]]
   chromosome <- range_split[1]
   start_pos <- as.numeric(range_split[2])
