@@ -113,16 +113,11 @@ createMtbpPhasesTracksWithRepliseq <- function(
     chromosome = chromosome, fill = rep("transparent", length(highlight_regions_starts)),
     col = highlight_regions_colors, inBackground = FALSE, lwd = 0.5
   )
-  p <- plotTracks(ht,
+  plotTracks(ht,
     chromosome = chromosome, from = start_pos,
     to = end_pos, sizes = as.numeric(track_sizes),
     showTitle = FALSE
-  )
-  gp <- grid::get.gpar()
-  if (!is.null(gp$font)) gp$font <- NULL
-  grid::set.gpar(gp)
-
-  grid.grabExpr(p,
+  ) %>% grid.grabExpr(
     width = figure_width,
     height = figure_height
   )
