@@ -63,8 +63,7 @@ createMtbpPhasesTracksWithRepliseq <- function(
     )
   ), ucscChromosomeNames = FALSE, showId = FALSE)
   axisTrack <- GenomeAxisTrack(
-    fontsize = 8, labelPos = "below", from = start_pos, to = end_pos, scale = axis_track_scale,
-    col.axis = "black", fontcolor = "black", col = "black", showTitle = TRUE
+    fontsize = 8, labelPos = "below", from = start_pos, to = end_pos, scale = axis_track_scale, showTitle = TRUE
   )
   dTrack_Repliseq <- readRDS(repliseq_gr_rds_path) %>% DataTrack(
     name = "RepliSeq",
