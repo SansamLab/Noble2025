@@ -9,6 +9,7 @@
 #' @param highlight_regions_starts Numeric vector of start positions for highlighted regions.
 #' @param highlight_regions_widths Numeric vector of widths for each highlight region.
 #' @param highlight_regions_colors Character vector of colors for highlight region outlines.
+#' @param hightlight_regions_lwd Weight of line around highlighted region
 #' @param mtbp_paths A named list with one entry for each phase ("G1", "EarlyS", "LateS", "G2").
 #'        Each entry must be a list with keys: `tx` (treatment BAM), `input` (control BAM), and `peaks` (BED file).
 #' @param lg2fc_ylimits Numeric vector of two values defining Y-axis limits for log2 fold change tracks.
@@ -36,7 +37,7 @@ createMtbpPhasesTracksWithRepliseq <- function(
     ), highlight_regions_widths = c(
       1672350,
       8656743, 1369815
-    ), highlight_regions_colors = c("blue", "orange", "purple"),
+    ), highlight_regions_colors = c("blue", "orange", "purple"), hightlight_regions_lwd = 1,
     mtbp_paths, lg2fc_ylimits = c(-2, 1.5), repliseq_gr_rds_path, ideogram_csv_path,
     blacklist_bed_path, peak_heatplot_bin_size = 50000,
     phase_colors = c(
@@ -110,7 +111,7 @@ createMtbpPhasesTracksWithRepliseq <- function(
     trackList = all_tracks[names(track_sizes)],
     start = highlight_regions_starts, width = highlight_regions_widths,
     chromosome = chromosome, fill = rep("transparent", length(highlight_regions_starts)),
-    col = highlight_regions_colors, inBackground = FALSE, lwd = 0.5
+    col = highlight_regions_colors, inBackground = FALSE, lwd = hightlight_regions_lwd
   )
   plotTracks(ht,
     chromosome = chromosome, from = start_pos,
