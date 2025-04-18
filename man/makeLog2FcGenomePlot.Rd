@@ -46,6 +46,8 @@ makeLog2FcGenomePlot(
 \item{tx_scaleFactor}{Numeric or NA. Optional library size scaling factor for treatment BAM (default: NA).}
 
 \item{in_scaleFactor}{Numeric or NA. Optional library size scaling factor for input BAM (default: NA).}
+
+\item{blacklist_granges}{GenomicRanges object with blacklisted regions (default:  NA)}
 }
 \value{
 A `ggplot2` object showing the log2 fold change across the specified region.

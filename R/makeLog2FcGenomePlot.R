@@ -15,6 +15,7 @@
 #' @param fillColor Character. Fill color for the area plot (default: "#006494").
 #' @param tx_scaleFactor Numeric or NA. Optional library size scaling factor for treatment BAM (default: NA).
 #' @param in_scaleFactor Numeric or NA. Optional library size scaling factor for input BAM (default: NA).
+#' @param blacklist_granges GenomicRanges object with blacklisted regions (default:  NA)
 #'
 #' @return A `ggplot2` object showing the log2 fold change across the specified region.
 #'
