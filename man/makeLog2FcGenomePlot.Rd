@@ -17,9 +17,9 @@ makeLog2FcGenomePlot(
   yLimits = c(-0.8, 0.8),
   autoCalculateYLimits = TRUE,
   fillColor = "#006494",
-  tx_scaleFactor = NA,
-  in_scaleFactor = NA,
-  blacklist_granges = NA
+  tx_scaleFactor = NULL,
+  in_scaleFactor = NULL,
+  blacklist_granges = NULL
 )
 }
 \arguments{
@@ -43,11 +43,11 @@ makeLog2FcGenomePlot(
 
 \item{fillColor}{Character. Fill color for the area plot (default: "#006494").}
 
-\item{tx_scaleFactor}{Numeric or NA. Optional library size scaling factor for treatment BAM (default: NA).}
+\item{tx_scaleFactor}{Numeric or NA. Optional library size scaling factor for treatment BAM (default: NULL).}
 
-\item{in_scaleFactor}{Numeric or NA. Optional library size scaling factor for input BAM (default: NA).}
+\item{in_scaleFactor}{Numeric or NA. Optional library size scaling factor for input BAM (default: NULL).}
 
-\item{blacklist_granges}{GenomicRanges object with blacklisted regions (default:  NA)}
+\item{blacklist_granges}{GenomicRanges object with blacklisted regions (default:  NULL)}
 }
 \value{
 A `ggplot2` object showing the log2 fold change across the specified region.

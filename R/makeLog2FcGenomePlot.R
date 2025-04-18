@@ -13,9 +13,9 @@
 #' @param yLimits Numeric vector of length 2, defining the y-axis limits (default: c(-0.8, 0.8)).
 #' @param autoCalculateYLimits Logical. If TRUE, compute y-axis limits automatically from data (default: TRUE).
 #' @param fillColor Character. Fill color for the area plot (default: "#006494").
-#' @param tx_scaleFactor Numeric or NA. Optional library size scaling factor for treatment BAM (default: NA).
-#' @param in_scaleFactor Numeric or NA. Optional library size scaling factor for input BAM (default: NA).
-#' @param blacklist_granges GenomicRanges object with blacklisted regions (default:  NA)
+#' @param tx_scaleFactor Numeric or NA. Optional library size scaling factor for treatment BAM (default: NULL).
+#' @param in_scaleFactor Numeric or NA. Optional library size scaling factor for input BAM (default: NULL).
+#' @param blacklist_granges GenomicRanges object with blacklisted regions (default:  NULL)
 #'
 #' @return A `ggplot2` object showing the log2 fold change across the specified region.
 #'
@@ -49,15 +49,15 @@ makeLog2FcGenomePlot <- function(chrom="chr3",
                                   yLimits=c(-0.8,0.8),
                                   autoCalculateYLimits=TRUE,
                                   fillColor="#006494",
-                                  tx_scaleFactor=NA,
-                                  in_scaleFactor=NA,
-                                 blacklist_granges = NA){
+                                  tx_scaleFactor=NULL,
+                                  in_scaleFactor=NULL,
+                                 blacklist_granges = NULL){
   gr <- GRanges(seqnames=chrom,ranges = IRanges(start=trackStart,end=trackEnd))
   windws <- slidingWindows(gr,windowSize,step=stepSize) %>% .[[1]]
   makeCPMS <- function(BamFile=txBamFile1,scaleFactor) {
     counts <- bamProfile(BamFile, gr, paired.end = "midpoint", mapqual = 15, binsize = stepSize)
     counts_rolled <- zoo::rollapply(counts@signals[[1]], width = windowSize / stepSize, sum, align = "left")
-    if (is.na(scaleFactor)) {
+    if (is.null(scaleFactor)) {
       totalReadCount <- idxstatsBam(BamFile) %>%
         {.[.$seqnames %in% paste0("chr", c(1:22)), ]} %>%
         {sum(as.numeric(.[, 3]))}
@@ -67,7 +67,7 @@ makeLog2FcGenomePlot <- function(chrom="chr3",
     }
     cpms_rolled_gr <- windws[1:length(cpms_rolled)] %>%
       {.$cpms <- cpms_rolled;.}
-    if (is.na(blacklist_granges)) {
+    if (is.null(blacklist_granges)) {
       return(cpms_rolled_gr)
     } else {
       return(cpms_rolled_gr[!cpms_rolled_gr %over% blacklist_granges])
