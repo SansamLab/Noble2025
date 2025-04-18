@@ -18,7 +18,8 @@ makeLog2FcGenomePlot(
   autoCalculateYLimits = TRUE,
   fillColor = "#006494",
   tx_scaleFactor = NA,
-  in_scaleFactor = NA
+  in_scaleFactor = NA,
+  blacklist_granges = NA
 )
 }
 \arguments{

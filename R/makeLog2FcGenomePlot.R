@@ -49,7 +49,8 @@ makeLog2FcGenomePlot <- function(chrom="chr3",
                                   autoCalculateYLimits=TRUE,
                                   fillColor="#006494",
                                   tx_scaleFactor=NA,
-                                  in_scaleFactor=NA){
+                                  in_scaleFactor=NA,
+                                 blacklist_granges = NA){
   gr <- GRanges(seqnames=chrom,ranges = IRanges(start=trackStart,end=trackEnd))
   windws <- slidingWindows(gr,windowSize,step=stepSize) %>% .[[1]]
   makeCPMS <- function(BamFile=txBamFile1,scaleFactor) {
@@ -65,7 +66,12 @@ makeLog2FcGenomePlot <- function(chrom="chr3",
     }
     cpms_rolled_gr <- windws[1:length(cpms_rolled)] %>%
       {.$cpms <- cpms_rolled;.}
-    return(cpms_rolled_gr)
+    if (is.na(blacklist_granges)) {
+      return(cpms_rolled_gr)
+    } else {
+      return(cpms_rolled_gr[!cpms_rolled_gr %over% blacklist_granges])
+    }
+
   }
 
   tx_cpms_gr <- makeCPMS(txBamFile,tx_scaleFactor)
