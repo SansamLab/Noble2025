@@ -12,7 +12,7 @@ set_custom_gviz_scheme(cex = 1, scheme_name = "myScheme")
 \item{scheme_name}{A name for the scheme to register (default = "myScheme").}
 }
 \value{
-Invisibly returns the modified scheme list. Registers scheme globally via `options(Gviz.scheme)`.
+Invisibly returns the modified scheme list. Registers scheme globally via \code{options(Gviz.scheme)}.
 }
 \description{
 Applies a consistent visual theme to Gviz genome tracks by modifying font sizes, colors, and other style attributes.

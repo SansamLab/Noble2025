@@ -16,6 +16,8 @@
 #' @import GenomicRanges
 #' @import IRanges
 #' @export
+#'
+
 parseUCSCtoGRanges <- function(coord_strings, genome = "unknown") {
   split_coords <- lapply(coord_strings, function(x) {
     parts <- strsplit(x, ":|-")[[1]]

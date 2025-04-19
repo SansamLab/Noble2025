@@ -9,12 +9,12 @@ make_euler_plot_of_overlaps_with_reference_peaks(peak_overlap_df, plot_colors)
 }
 \arguments{
 \item{peak_overlap_df}{A data frame where each row represents a peak in the reference set,
-and each column corresponds to a query peak set, with `TRUE`/`FALSE` values indicating overlaps.}
+and each column corresponds to a query peak set, with \code{TRUE}/\code{FALSE} values indicating overlaps.}
 
 \item{plot_colors}{A vector of colors to use for the Euler plot.}
 }
 \value{
-A `ggplot` object representing the Euler plot.
+A \code{ggplot} object representing the Euler plot.
 }
 \description{
 This function creates an Euler plot based on a data frame of peak overlaps.

@@ -42,9 +42,9 @@ make2SampleCpmGRanges(
 \value{
 A list with three components:
 \itemize{
-  \item \code{tx_cpms_gr}: A \code{GRanges} object with CPM values for treatment samples.
-  \item \code{in_cpms_gr}: A \code{GRanges} object with CPM values for control samples.
-  \item \code{yLimits}: A numeric vector of y-axis limits based on CPM distribution quantiles.
+\item \code{tx_cpms_gr}: A \code{GRanges} object with CPM values for treatment samples.
+\item \code{in_cpms_gr}: A \code{GRanges} object with CPM values for control samples.
+\item \code{yLimits}: A numeric vector of y-axis limits based on CPM distribution quantiles.
 }
 }
 \description{

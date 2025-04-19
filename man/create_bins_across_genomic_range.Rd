@@ -21,7 +21,7 @@ create_bins_across_genomic_range(
 \item{binSize}{Numeric. The width of each bin.}
 }
 \value{
-A `GRanges` object containing genomic bins.
+A \code{GRanges} object containing genomic bins.
 }
 \description{
 This function generates evenly spaced bins of a given size across a specified genomic range.

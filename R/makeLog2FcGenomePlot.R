@@ -65,6 +65,8 @@ makeLog2FcGenomePlot <- function(chrom="chr3",
     } else {
       cpms_rolled <- counts_rolled / scaleFactor
     }
+    message("Number of windows: ", length(windws))
+    message("Length of rolled CPMs: ", length(counts_rolled))
     cpms_rolled_gr <- windws[1:length(cpms_rolled)] %>%
       {.$cpms <- cpms_rolled;.}
     if (is.null(blacklist_granges)) {
@@ -77,35 +79,19 @@ makeLog2FcGenomePlot <- function(chrom="chr3",
 
   tx_cpms_gr <- makeCPMS(txBamFile,tx_scaleFactor)
   in_cpms_gr <- makeCPMS(inBamFile,in_scaleFactor)
-
-  makeDataFrameAndYLimits <- function(txBamFile,inBamFile, txScaleFactor,inScaleFactor){
-      tx_cpms_gr <- makeCPMS(txBamFile,txScaleFactor)
-      in_cpms_gr <- makeCPMS(inBamFile,inScaleFactor)
-
-      makeLg2FcGr <- function(gr_tx,gr_in){
-      gr <- disjoin(gr_tx)
-      mcols(gr) <- data.frame("score" = log2(gr_tx$cpms/(gr_in$cpms+0.0000000001)))
-      return(gr)}
-
-      LgFC_gr <- makeLg2FcGr(tx_cpms_gr,in_cpms_gr)
-
-
-      yLimits_layer <- c(quantile(LgFC_gr$score,0.0001),quantile(LgFC_gr$score,0.9999)) %>%
-      {.*1.2}
-
-      df <- as.data.frame(LgFC_gr) %>%
-      {data.frame(x=rowMeans(.[,c(2,3)]),y=.$score)} %>%
-      .[is.finite(.$y),]
-      return(list(df,yLimits_layer))
-    }
-
-  lst <- makeDataFrameAndYLimits(txBamFile,inBamFile,tx_scaleFactor,in_scaleFactor)
-
+  LgFC_gr <- tx_cpms_gr
+  mcols(LgFC_gr) <- NULL
+  calculated_lg2fc <- log2(tx_cpms_gr$cpms/(in_cpms_gr$cpms+0.0000000001))
+  df <- data.frame("score" = calculated_lg2fc)
+  mcols(LgFC_gr) <- df
+  yLimits_layer <- c(quantile(LgFC_gr$score,0.0001),quantile(LgFC_gr$score,0.9999)) %>%
+    {.*1.2}
   if (autoCalculateYLimits) {
-      yLimits <- lst[[2]]
-    }
-
-  df <- lst[[1]]
+    yLimits <- yLimits_layer
+  }
+  df <- as.data.frame(LgFC_gr) %>%
+    {data.frame(x=rowMeans(.[,c(2,3)]),y=.$score)} %>%
+    .[is.finite(.$y),]
 
   ggplt <- ggplot(data=df,aes(x=x,y=y)) +
   geom_area(fill=fillColor) +

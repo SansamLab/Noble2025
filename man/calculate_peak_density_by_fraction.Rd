@@ -14,12 +14,12 @@ calculate_peak_density_by_fraction(repliseq_gr, peak_gr)
 \value{
 A \code{data.frame} with one row per replication timing fraction and the following columns:
 \itemize{
-  \item \code{S.fraction}: Fraction label (S1–S16)
-  \item \code{bp}: Total base pairs in that S fraction
-  \item \code{peakCount}: Total number of peaks overlapping the S fraction
-  \item \code{meanPeakCount}: Mean number of peaks per 50kb window in the S fraction
-  \item \code{peakDensity}: Normalized peak density (peaks per 50 kb)
-  \item \code{S.fraction.numeric}: Numeric version of the S fraction (1–16)
+\item \code{S.fraction}: Fraction label (S1–S16)
+\item \code{bp}: Total base pairs in that S fraction
+\item \code{peakCount}: Total number of peaks overlapping the S fraction
+\item \code{meanPeakCount}: Mean number of peaks per 50kb window in the S fraction
+\item \code{peakDensity}: Normalized peak density (peaks per 50 kb)
+\item \code{S.fraction.numeric}: Numeric version of the S fraction (1–16)
 }
 }
 \description{

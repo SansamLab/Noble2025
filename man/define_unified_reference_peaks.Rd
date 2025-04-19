@@ -7,10 +7,10 @@
 define_unified_reference_peaks(peaks_gRanges_list)
 }
 \arguments{
-\item{peaks_gRanges_list}{A list of `GRanges` objects, each representing a set of peaks.}
+\item{peaks_gRanges_list}{A list of \code{GRanges} objects, each representing a set of peaks.}
 }
 \value{
-A `GRanges` object representing the unified peak set.
+A \code{GRanges} object representing the unified peak set.
 }
 \description{
 This function merges multiple peak sets into a single unified peak set,

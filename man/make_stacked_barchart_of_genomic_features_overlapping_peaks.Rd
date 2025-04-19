@@ -17,15 +17,17 @@ make_stacked_barchart_of_genomic_features_overlapping_peaks(
 \arguments{
 \item{df_of_genomic_features_overlapping_peaks}{A data frame containing the frequency of genomic features overlapping with peaks.
 Expected columns:
-- `Feature`: Genomic feature (e.g., "Promoter", "Exon", "Intron").
-- `Frequency`: The number of peaks overlapping each feature.
-- `Set`: The label for the peak set.}
+\itemize{
+\item \code{Feature}: Genomic feature (e.g., "Promoter", "Exon", "Intron").
+\item \code{Frequency}: The number of peaks overlapping each feature.
+\item \code{Set}: The label for the peak set.
+}}
 
 \item{feature_colors}{A named vector of colors for each genomic feature.
 The default color scheme follows a standardized palette for promoters, UTRs, exons, introns, and intergenic regions.}
 }
 \value{
-A `ggplot` object representing a stacked bar chart of genomic feature frequencies.
+A \code{ggplot} object representing a stacked bar chart of genomic feature frequencies.
 }
 \description{
 This function generates a stacked bar chart representing the frequency of genomic

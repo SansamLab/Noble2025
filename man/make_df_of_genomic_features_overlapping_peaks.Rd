@@ -12,20 +12,22 @@ make_df_of_genomic_features_overlapping_peaks(
 )
 }
 \arguments{
-\item{peaks_gRanges}{A `GRanges` object containing genomic peak locations.}
+\item{peaks_gRanges}{A \code{GRanges} object containing genomic peak locations.}
 
-\item{annotationDb}{Character. The annotation database for gene annotations. Defaults to `"org.Hs.eg.db"` for human genes.}
+\item{annotationDb}{Character. The annotation database for gene annotations. Defaults to \code{"org.Hs.eg.db"} for human genes.}
 
-\item{TxDb}{A `TxDb` object specifying transcript annotations. Defaults to `txdb`.}
+\item{TxDb}{A \code{TxDb} object specifying transcript annotations. Defaults to \code{txdb}.}
 
-\item{SetName}{Character. The name of the peak set (used for labeling in downstream analyses). Defaults to `"All Peaks"`.}
+\item{SetName}{Character. The name of the peak set (used for labeling in downstream analyses). Defaults to \code{"All Peaks"}.}
 }
 \value{
 A data frame summarizing the genomic features overlapping the given peaks.
-  The data frame includes:
-  - `Feature`: Genomic feature (e.g., "Promoter", "Exon", "Intron").
-  - `Frequency`: The number of peaks overlapping each feature.
-  - `Set`: The label for the peak set.
+The data frame includes:
+\itemize{
+\item \code{Feature}: Genomic feature (e.g., "Promoter", "Exon", "Intron").
+\item \code{Frequency}: The number of peaks overlapping each feature.
+\item \code{Set}: The label for the peak set.
+}
 }
 \description{
 This function annotates genomic regions overlapping with peaks using ChIPseeker.

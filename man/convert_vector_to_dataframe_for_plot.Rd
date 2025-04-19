@@ -11,8 +11,10 @@ convert_vector_to_dataframe_for_plot(count_vector)
 }
 \value{
 A data frame with two columns:
-  - `counts`: The peak count per bin.
-  - `x`: The bin index (1-based).
+\itemize{
+\item \code{counts}: The peak count per bin.
+\item \code{x}: The bin index (1-based).
+}
 }
 \description{
 This function converts a numeric vector (e.g., peak counts) into a data frame

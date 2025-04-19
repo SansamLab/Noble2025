@@ -11,7 +11,7 @@ getTotalReadCount(BamFile)
 }
 \value{
 A single numeric value representing the total number of reads mapped
-  to chromosomes chr1 through chr22.
+to chromosomes chr1 through chr22.
 }
 \description{
 This function calculates the total number of mapped reads in a BAM file,

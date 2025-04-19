@@ -7,13 +7,15 @@
 sansam_theme()
 }
 \value{
-A `ggplot2::theme` object with customized appearance:
-- Transparent background
-- Small font sizes (6–8 pt)
-- No outer margins
+A \code{ggplot2::theme} object with customized appearance:
+\itemize{
+\item Transparent background
+\item Small font sizes (6–8 pt)
+\item No outer margins
+}
 }
 \description{
-A minimalist `ggplot2` theme with small font sizes and transparent backgrounds,
+A minimalist \code{ggplot2} theme with small font sizes and transparent backgrounds,
 designed for compact scientific figures.
 }
 \examples{

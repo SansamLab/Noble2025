@@ -12,7 +12,7 @@ make_euler_plot_showing_peak_overlaps(peaks_bed_paths_list, colors_vector)
 \item{colors_vector}{A vector of colors to use for the Euler plot.}
 }
 \value{
-A `ggplot` object representing the Euler plot of peak overlaps.
+A \code{ggplot} object representing the Euler plot of peak overlaps.
 }
 \description{
 This function reads multiple BED files, defines a unified reference peak set,

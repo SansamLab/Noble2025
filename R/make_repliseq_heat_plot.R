@@ -21,7 +21,7 @@
 #' @export
 make_repliseq_heat_plot <- function(chromosomeToPlot, startToPlot, endToPlot) {
   # Load Repli-seq data (must be available as HCT_Repliseq_gr)
-  RepSeqData <- data(HCT_Repliseq_gr)
+  RepSeqData <- HCT_Repliseq_gr
 
   # Subset for the desired chromosome and coordinates, then transform into a plotting-ready dataframe
   RepSeqData_subset <- RepSeqData[

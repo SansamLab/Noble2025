@@ -7,14 +7,16 @@
 sansam_theme2()
 }
 \value{
-A `ggplot2::theme` object with:
-- Transparent backgrounds
-- Panel border (black)
-- Small font sizes (6–8 pt)
-- No outer margins
+A \code{ggplot2::theme} object with:
+\itemize{
+\item Transparent backgrounds
+\item Panel border (black)
+\item Small font sizes (6–8 pt)
+\item No outer margins
+}
 }
 \description{
-A `ggplot2` theme similar to `sansam_theme()` but includes a black panel border
+A \code{ggplot2} theme similar to \code{sansam_theme()} but includes a black panel border
 and smaller title text. Ideal for publication-quality plots with boxed panels.
 }
 \examples{

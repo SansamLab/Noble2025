@@ -21,15 +21,15 @@ generateCorrelationMatrixOfReadLg2FcInRanges(
 
 \item{sampleLabels}{Character vector of sample names to assign to columns in the output matrix.}
 
-\item{correlationMethod}{Character string specifying the method used in `cor()` ("spearman", "pearson", etc.). Default is "spearman".}
+\item{correlationMethod}{Character string specifying the method used in \code{cor()} ("spearman", "pearson", etc.). Default is "spearman".}
 }
 \value{
-A correlation matrix plot is displayed via `corrplot`.
+A correlation matrix plot is displayed via \code{corrplot}.
 }
 \description{
 This function calculates the log2 fold change (log2FC) of read counts
 across a set of genomic regions and visualizes the sample-to-sample
-correlation matrix using `corrplot`.
+correlation matrix using \code{corrplot}.
 }
 \examples{
 generateCorrelationMatrixOfReadLg2FcInRanges(

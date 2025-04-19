@@ -29,7 +29,7 @@ makeLog2FcGenomePlotOverlay(
 )
 }
 \arguments{
-\item{chrom}{Character. Chromosome to analyze (default: `"chr3"`).}
+\item{chrom}{Character. Chromosome to analyze (default: \code{"chr3"}).}
 
 \item{trackStart}{Integer. Genomic start coordinate of the region to analyze (default: 5000000).}
 
@@ -64,7 +64,7 @@ makeLog2FcGenomePlotOverlay(
 \item{in_top_scaleFactor}{Numeric or NA. Optional scaling factor for top control BAM file (default: NA).}
 }
 \value{
-A `ggplot2` object showing overlaid log2 fold change plots for two sample sets.
+A \code{ggplot2} object showing overlaid log2 fold change plots for two sample sets.
 }
 \description{
 This function computes the log2 fold change (log2FC) between treatment and control BAM files

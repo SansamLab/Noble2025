@@ -7,14 +7,14 @@
 make_enriched_heatmap_grid(matrix_file_path, matrix_order, column_titles)
 }
 \arguments{
-\item{matrix_file_path}{Path to a gzipped matrix file output by deepTools (e.g., from `computeMatrix`).}
+\item{matrix_file_path}{Path to a gzipped matrix file output by deepTools (e.g., from \code{computeMatrix}).}
 
-\item{matrix_order}{A numeric vector indicating the order in which to plot matrices (e.g., `c(1, 3, 2, 4)`).}
+\item{matrix_order}{A numeric vector indicating the order in which to plot matrices (e.g., \code{c(1, 3, 2, 4)}).}
 
-\item{column_titles}{A character vector of column titles to display above each heatmap (e.g., `c("Sample A", "Sample B")`).}
+\item{column_titles}{A character vector of column titles to display above each heatmap (e.g., \code{c("Sample A", "Sample B")}).}
 }
 \value{
-A combined heatmap and legend grid object rendered with `cowplot::plot_grid()`.
+A combined heatmap and legend grid object rendered with \code{cowplot::plot_grid()}.
 }
 \description{
 Generates a composite grid of enriched heatmaps from a deepTools matrix file using a specified order

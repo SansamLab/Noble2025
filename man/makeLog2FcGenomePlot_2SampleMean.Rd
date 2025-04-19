@@ -23,7 +23,7 @@ makeLog2FcGenomePlot_2SampleMean(
 )
 }
 \arguments{
-\item{chrom}{Character. Chromosome to analyze (default: `"chr3"`).}
+\item{chrom}{Character. Chromosome to analyze (default: \code{"chr3"}).}
 
 \item{trackStart}{Integer. Start coordinate of the genomic region (default: 5000000).}
 
@@ -46,8 +46,8 @@ makeLog2FcGenomePlot_2SampleMean(
 \item{fillColor}{Character. Fill color for the area plot (default: "#006494").}
 }
 \value{
-A `ggplot2` object visualizing the log2 fold change between average treatment and control CPMs
-        across the genomic region.
+A \code{ggplot2} object visualizing the log2 fold change between average treatment and control CPMs
+across the genomic region.
 }
 \description{
 This function computes the average CPM (counts per million) across two treatment and two control BAM files

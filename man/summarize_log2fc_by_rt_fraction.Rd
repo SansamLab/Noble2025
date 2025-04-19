@@ -7,17 +7,17 @@
 summarize_log2fc_by_rt_fraction(log2fc_gr, repliseq_gr)
 }
 \arguments{
-\item{log2fc_gr}{A `GRanges` object with a metadata column named `Log2FC`.}
+\item{log2fc_gr}{A \code{GRanges} object with a metadata column named \code{Log2FC}.}
 
-\item{repliseq_gr}{A `GRanges` object with Repli-seq data across S-phase fractions. Each metadata column
+\item{repliseq_gr}{A \code{GRanges} object with Repli-seq data across S-phase fractions. Each metadata column
 corresponds to an S-phase fraction (e.g., S1 to S16).}
 }
 \value{
-A `data.frame` with columns:
-  \describe{
-    \item{S.fraction}{S-phase fraction with max Repli-seq signal (e.g., "S1", "S2", ...).}
-    \item{Log2FC}{Log2 fold change value from the input `log2fc_gr`.}
-  }
+A \code{data.frame} with columns:
+\describe{
+\item{S.fraction}{S-phase fraction with max Repli-seq signal (e.g., "S1", "S2", ...).}
+\item{Log2FC}{Log2 fold change value from the input \code{log2fc_gr}.}
+}
 }
 \description{
 Matches log2 fold change values from a GRanges object to high-resolution replication timing (Repli-seq)

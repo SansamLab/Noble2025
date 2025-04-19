@@ -12,14 +12,14 @@ make_heatmap_of_peak_counts_in_bins(
 }
 \arguments{
 \item{peak_counts_in_bins_df}{A data frame containing peak counts per bin.
-It must have two columns: `counts` (factor or numeric) and `x` (bin index).}
+It must have two columns: \code{counts} (factor or numeric) and \code{x} (bin index).}
 
 \item{heatmap_fill_colors}{A vector of colors corresponding to unique peak count values.}
 
 \item{heatmap_breaks}{A numeric vector defining the breakpoints for color assignment.}
 }
 \value{
-A `ggplot` object representing the heatmap.
+A \code{ggplot} object representing the heatmap.
 }
 \description{
 This function creates a heatmap showing peak density across genomic bins.

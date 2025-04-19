@@ -37,10 +37,10 @@ make_S1_earlyS_lateS_G2_region_plot(
 \item{Bams_Beds_and_Colors_List}{A named list of lists, one per condition (e.g., "G1", "EarlyS").
 Each inner list must include:
 \describe{
-  \item{txBamFile}{Path to treatment BAM file.}
-  \item{inBamFile}{Path to input BAM file.}
-  \item{peaksBedFile}{Path to peaks BED file (unused in this function but included for completeness).}
-  \item{track_color}{Color for the plotted track.}
+\item{txBamFile}{Path to treatment BAM file.}
+\item{inBamFile}{Path to input BAM file.}
+\item{peaksBedFile}{Path to peaks BED file (unused in this function but included for completeness).}
+\item{track_color}{Color for the plotted track.}
 }}
 
 \item{subregion_marker_color}{Color of horizontal line marker to indicate subregion of interest (default: "red").}

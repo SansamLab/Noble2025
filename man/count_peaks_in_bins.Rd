@@ -7,9 +7,9 @@
 count_peaks_in_bins(peaks_gRanges, genomicRange_bins)
 }
 \arguments{
-\item{peaks_gRanges}{A `GRanges` object containing peak locations.}
+\item{peaks_gRanges}{A \code{GRanges} object containing peak locations.}
 
-\item{genomicRange_bins}{A `GRanges` object representing genomic bins.}
+\item{genomicRange_bins}{A \code{GRanges} object representing genomic bins.}
 }
 \value{
 A numeric vector of peak counts per bin.

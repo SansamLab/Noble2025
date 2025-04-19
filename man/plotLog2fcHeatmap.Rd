@@ -41,8 +41,8 @@ plotLog2fcHeatmap(
 \value{
 A list with two elements:
 \describe{
-  \item{average_profile_plot}{A ggplot2 line plot showing average log2 fold change per position per group.}
-  \item{heatmap_plot}{A ComplexHeatmap object showing per-region log2 fold change.}
+\item{average_profile_plot}{A ggplot2 line plot showing average log2 fold change per position per group.}
+\item{heatmap_plot}{A ComplexHeatmap object showing per-region log2 fold change.}
 }
 }
 \description{

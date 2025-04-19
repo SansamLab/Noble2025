@@ -10,7 +10,7 @@ setCustomGvizScheme()
 Invisibly returns the name of the applied scheme.
 }
 \description{
-This function defines and registers a customized Gviz visual scheme called `"myScheme"`,
+This function defines and registers a customized Gviz visual scheme called \code{"myScheme"},
 which sets consistent font sizes, colors, and graphical scaling for genome tracks.
-It then sets it as the default Gviz scheme via `options(Gviz.scheme = "myScheme")`.
+It then sets it as the default Gviz scheme via \code{options(Gviz.scheme = "myScheme")}.
 }

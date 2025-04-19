@@ -38,7 +38,7 @@ createMtbpPhasesTracksWithRepliseq2(
 \item{hightlight_regions_lwd}{Weight of line around highlighted region}
 
 \item{mtbp_paths}{A named list with one entry for each phase ("G1", "EarlyS", "LateS", "G2").
-Each entry must be a list with keys: `tx` (treatment BAM), `input` (control BAM), and `peaks` (BED file).}
+Each entry must be a list with keys: \code{tx} (treatment BAM), \code{input} (control BAM), and \code{peaks} (BED file).}
 
 \item{lg2fc_ylimits}{Numeric vector of two values defining Y-axis limits for log2 fold change tracks.}
 
@@ -61,7 +61,7 @@ Each entry must be a list with keys: `tx` (treatment BAM), `input` (control BAM)
 \item{axis_track_scale}{The distance in base pairs between tick marks on the genome axis.}
 }
 \value{
-A captured grid graphics object (using `grid.grabExpr`) representing the final genome track plot.
+A captured grid graphics object (using \code{grid.grabExpr}) representing the final genome track plot.
 }
 \description{
 This function generates a genome browser-style figure for a specified genomic region,

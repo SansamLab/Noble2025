@@ -23,7 +23,7 @@ makeLog2FcGenomePlot(
 )
 }
 \arguments{
-\item{chrom}{Character. Chromosome to analyze (e.g., `"chr3"`).}
+\item{chrom}{Character. Chromosome to analyze (e.g., \code{"chr3"}).}
 
 \item{trackStart}{Integer. Genomic start coordinate of the region to analyze.}
 
@@ -50,7 +50,7 @@ makeLog2FcGenomePlot(
 \item{blacklist_granges}{GenomicRanges object with blacklisted regions (default:  NULL)}
 }
 \value{
-A `ggplot2` object showing the log2 fold change across the specified region.
+A \code{ggplot2} object showing the log2 fold change across the specified region.
 }
 \description{
 This function computes the log2 fold change (log2FC) in read coverage between treatment and input BAM files

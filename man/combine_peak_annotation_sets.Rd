@@ -17,6 +17,6 @@ combine_peak_annotation_sets(peak_sets, txdb, tss_region = c(-3000, 3000))
 A data.frame containing annotation summaries for all peak sets.
 }
 \description{
-Calls `annotate_and_label_peaks()` for each set and binds the results
+Calls \code{annotate_and_label_peaks()} for each set and binds the results
 into a single tidy data frame.
 }

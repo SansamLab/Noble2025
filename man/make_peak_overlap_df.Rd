@@ -7,14 +7,14 @@
 make_peak_overlap_df(subjectPeaks, queryPeaksList)
 }
 \arguments{
-\item{subjectPeaks}{A `GRanges` object representing the reference peak set.}
+\item{subjectPeaks}{A \code{GRanges} object representing the reference peak set.}
 
-\item{queryPeaksList}{A named list of `GRanges` objects, each representing a query peak set.}
+\item{queryPeaksList}{A named list of \code{GRanges} objects, each representing a query peak set.}
 }
 \value{
-A data frame where each row corresponds to a peak in `subjectPeaks`,
-        and each column corresponds to a query peak set. Values are `TRUE` if the
-        subject peak overlaps the query peak set and `FALSE` otherwise.
+A data frame where each row corresponds to a peak in \code{subjectPeaks},
+and each column corresponds to a query peak set. Values are \code{TRUE} if the
+subject peak overlaps the query peak set and \code{FALSE} otherwise.
 }
 \description{
 This function takes a set of subject peaks and a list of query peak sets,

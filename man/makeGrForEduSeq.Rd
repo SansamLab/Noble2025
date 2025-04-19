@@ -15,7 +15,7 @@ A \code{GRanges} object with chromosome, start, end, and any extra metadata colu
 }
 \description{
 This function transforms an EduSeq-format data frame into a \code{GRanges} object.
-It calculates genomic coordinates based on the `bin` column and filters to include
+It calculates genomic coordinates based on the \code{bin} column and filters to include
 only standard human chromosomes (chr1–chr22).
 }
 \details{
