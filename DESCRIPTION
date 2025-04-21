@@ -12,3 +12,34 @@ RoxygenNote: 7.3.2
 Depends: 
     R (>= 3.5)
 LazyData: true
+Imports:
+    AnnotationDbi,
+    ChIPseeker,
+    ComplexHeatmap,
+    EnrichedHeatmap,
+    GenomeInfoDb,
+    GenomicRanges,
+    Gviz,
+    IRanges,
+    Rsamtools,
+    S4Vectors,
+    SummarizedExperiment,
+    UpSetR,
+    bamsignals,
+    circlize,
+    corrplot,
+    cowplot,
+    dplyr,
+    eulerr,
+    ggplot2,
+    gridGraphics,
+    magrittr,
+    matrixStats,
+    profileplyr,
+    reshape2,
+    rtracklayer,
+    scales,
+    viridis,
+    viridisLite,
+    zoo
+  
